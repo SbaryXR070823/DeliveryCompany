@@ -1,5 +1,6 @@
 using Constants.Authentification;
 using DataAccess.DataAccess;
+using DeliveryCompany.DataAccess.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Models.Authentification;
@@ -15,6 +16,9 @@ var connectionStringData = builder.Configuration.GetConnectionString("DefaultCon
 
 builder.Services.AddDbContext<AppIdentityDbAccess>(
     options => options.UseSqlServer(connectionStringIdentity));
+
+builder.Services.AddDbContext<DataAppDbContext>(
+    options => options.UseSqlServer(connectionStringData));
 
 builder.Services.AddIdentity<AppUser, IdentityRole>(
     options =>
