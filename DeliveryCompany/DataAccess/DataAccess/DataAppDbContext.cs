@@ -30,7 +30,7 @@ namespace DeliveryCompany.DataAccess.Data
                 new PageDescriptions
                 {
                     PageDescriptionsId = 1,
-                    Description = "initial description"
+                    Description = "Initial Description"
                 }
             );
 
