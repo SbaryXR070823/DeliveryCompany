@@ -1,6 +1,8 @@
 using Constants.Authentification;
 using DataAccess.DataAccess;
 using DeliveryCompany.DataAccess.Data;
+using DeliveryCompany.Services.IServices;
+using DeliveryCompany.Services.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Models.Authentification;
@@ -19,6 +21,9 @@ builder.Services.AddDbContext<AppIdentityDbAccess>(
 
 builder.Services.AddDbContext<DataAppDbContext>(
     options => options.UseSqlServer(connectionStringData));
+
+builder.Services.AddTransient<IPageDescriptionService, PageDescriptionService>();
+builder.Services.AddTransient<ICityService, CityService>();
 
 builder.Services.AddIdentity<AppUser, IdentityRole>(
     options =>

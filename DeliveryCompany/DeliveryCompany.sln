@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{E54E7AFB-FA2E-454A-B36E-A93C86EC7075}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Constants", "Constants\Constants.csproj", "{A2EB956A-2C4E-46C5-BD30-7A69773EABC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Constants", "Constants\Constants.csproj", "{A2EB956A-2C4E-46C5-BD30-7A69773EABC0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{FD0707A5-144A-4DEC-9908-613EB2D610DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{A2EB956A-2C4E-46C5-BD30-7A69773EABC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2EB956A-2C4E-46C5-BD30-7A69773EABC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2EB956A-2C4E-46C5-BD30-7A69773EABC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD0707A5-144A-4DEC-9908-613EB2D610DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD0707A5-144A-4DEC-9908-613EB2D610DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD0707A5-144A-4DEC-9908-613EB2D610DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD0707A5-144A-4DEC-9908-613EB2D610DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
