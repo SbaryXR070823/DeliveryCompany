@@ -9,6 +9,7 @@ namespace DeliveryCompany.Services.IServices
     public interface IPageDescriptionService
     {
         Task<Models.DbModels.PageDescriptions> GetPageDescription(int Id);
+		Task UpdatePageDescription(Models.DbModels.PageDescriptions pageDescriptions);
 
 	}
 }
