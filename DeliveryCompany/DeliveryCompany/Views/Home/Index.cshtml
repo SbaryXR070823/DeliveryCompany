@@ -1,8 +1,69 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using Constants.Authentification
+@using Models.Authentification
+@using Models.ViewModels
+@using Microsoft.AspNetCore.Identity
+@model HomePageVM;
+@{
+	ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container">
+	<div id="loading-indicator" style="display:none">
+		@await Html.PartialAsync("_Loading");
+	</div>
+	<h1>Delivery Company SMA</h1>
+
+	<div class="row  mt-5">
+			<div class="col-md-6">
+				<p style="font-size:18px">@Model.PageDescriptions.Description</p>
+			</div>
+		<div class="col-md-6">
+			<img src="~/assets/OIG3-fD_uZWi2S-transformed.jpeg" alt="Company Image" style="border-radius: 50%; width: 80%;">
+		</div>
+	</div>
+
+	<div class="row mt-5">
+		@if (Model.Cities.Count != 0)
+		{
+			<div class="col-md-12">
+				<h2>Cities we deliver in</h2>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Name</th>
+							@if (User.IsInRole(UserRoles.Admin))
+							{
+								<th></th>
+							}
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var city in Model.Cities)
+						{
+							<tr>
+								<td>@city.CityId</td>
+								<td>@city.Name</td>
+								@if (User.IsInRole(UserRoles.Admin))
+								{
+									<td>
+										<a href="#" class="btn btn-danger mx-1 delete-btn" data-id="@city.CityId">
+											<i class="bi bi-trash-fill"></i>
+										</a>
+									</td>
+								}
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
+		}
+		else
+		{
+			<p>No Data to display!</p>
+		}
+	</div>
 </div>
+
+
+
