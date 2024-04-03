@@ -18,5 +18,22 @@ namespace DeliveryCompany.Services.Services
             var result = await _dbContext.Cities.OrderBy(c => c.Name).ToListAsync();
             return result;
         }
-    }
+
+		public async Task AddNewCity(string name)
+		{
+			City city = new City { Name = name };
+			var result = await _dbContext.Cities.AddAsync(city);
+			if (result != null)
+			{
+				await _dbContext.SaveChangesAsync();
+			}
+		}
+
+		public async Task DeleteCity(int id)
+		{
+			var city = await _dbContext.Cities.FindAsync(id);
+			_dbContext.Remove(city);
+			await _dbContext.SaveChangesAsync();
+		}
+	}
 }

@@ -4,6 +4,7 @@ using DeliveryCompany.Services.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using DeliveryCompany.Models.DbModels;
 
 namespace DeliveryCompany.Controllers
 {
@@ -33,8 +34,23 @@ namespace DeliveryCompany.Controllers
             return View(view);
         }
 
+		public async Task UpdateHomeDescription([FromBody] PageDescriptions pageDescriptions)
+		{
+			await _pageDescriptionService.UpdatePageDescription(pageDescriptions);
+		}
 
-        public IActionResult Privacy()
+		[HttpPost]
+		public async Task AddNewCity([FromBody] string name)
+		{
+			await _cityService.AddNewCity(name);
+		}
+
+		public async Task DeleteCity(int id)
+		{
+			await _cityService.DeleteCity(id);
+		}
+
+		public IActionResult Privacy()
         {
             return View();
         }

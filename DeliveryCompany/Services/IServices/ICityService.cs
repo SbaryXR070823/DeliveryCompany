@@ -10,5 +10,7 @@ namespace DeliveryCompany.Services.IServices
     public interface ICityService
     {
         Task<List<City>> GetCitiesAsync();
+		Task AddNewCity(string name);
+		Task DeleteCity(int id);
 	}
 }
