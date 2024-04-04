@@ -1,0 +1,110 @@
+﻿@using Models.ViewModels;
+@{
+	ViewData["Title"] = "Orders Page";
+}
+@model List<OrderVM>
+<div class="container">
+	<div class="row pt-4 pb-3">
+		<div class="col-6">
+			<div class="row">
+				<h2 class="text-primary">
+					Category List
+				</h2>
+				<p>
+					Size:Height x Width x Length (cm)
+				</p>
+			</div>
+		</div>
+		<div class="col-6 text-end">
+			<button type="button" class="btn btn-dark form-control" data-bs-toggle="modal">
+				Create
+			</button>
+		</div>
+	</div>
+	@if (Model.Count != 0)
+	{
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>
+						Price
+					</th>
+					<th>
+						Name
+					</th>
+					<th>
+						Description
+					</th>
+					<th>
+						Weight
+					</th>
+					<th>
+						Size
+					</th>
+					<th>
+						DateTime
+					</th>
+					<th>
+						Status
+					</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var obj in Model.OrderBy(
+						category => category.DateTime))
+				{
+					<tr class="clickable">
+						<td>
+							@obj.Price.ToString("F2") RON
+						</td>
+						<td>
+							@obj.Name
+						</td>
+						<td>
+							@obj.Description
+						</td>
+						<td>
+							@obj.Weight Kg
+						</td>
+						<td>
+							@obj.Height x @obj.Width x @obj.Length (cm)
+						</td>
+						<td>
+							@obj.DateTime
+						</td>
+						<td>
+							@obj.Status
+						</td>
+						<td>
+							<div class="w-75" role="group">
+								@if (obj.Status == DeliveryCompany.Utility.Enums.OrderStatus.Unassigned)
+								{
+									<a href="#" class="btn btn-danger mx-1 delete-btn">
+										<i class="bi bi-trash-fill">Cancel Order</i>
+									</a>
+								}
+								else
+								{
+									<button type="button" class="btn btn-danger mx-3 disabled" disabled>
+										<i class="bi bi-trash-fill"></i> Cancel Order
+									</button>
+								}
+							</div>
+						</td>
+					</tr>
+				}
+			</tbody>
+
+		</table>
+	}
+	else
+	{
+		<p>No Data to display!</p>
+	}
+</div>
+@section Scripts {
+	@{
+		<partial name="_ValidationScriptsPartial" />
+	}
+}
