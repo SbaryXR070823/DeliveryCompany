@@ -6,6 +6,8 @@ using DeliveryCompany.Services.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Models.Authentification;
+using Services.IServices;
+using Services.Services;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +26,7 @@ builder.Services.AddDbContext<DataAppDbContext>(
 
 builder.Services.AddTransient<IPageDescriptionService, PageDescriptionService>();
 builder.Services.AddTransient<ICityService, CityService>();
+builder.Services.AddTransient<IOrdersService, OrdersService>();
 
 builder.Services.AddIdentity<AppUser, IdentityRole>(
     options =>
