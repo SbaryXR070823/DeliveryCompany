@@ -1,4 +1,5 @@
-﻿using Models.ViewModels;
+﻿using DeliveryCompany.Models.DbModels;
+using Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,9 @@ namespace Services.IServices
     public interface IOrdersService
     {
 		Task<List<OrderVM>> GetOrdersAsync(string userId);
+        Task CreateOrderAsync(Packages package, string userId);
+        Task<bool> DeleteAsync(int id);
 
-	}
+
+    }
 }

@@ -1,0 +1,140 @@
+﻿@using Models.ViewModels
+@model OrderVM
+
+<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel">Create new Order</h5>  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="loading-indicator" style="display:none">
+                    @await Html.PartialAsync("_Loading");
+                </div>
+                Are you sure you want to create this Order?
+                <form method="post" id="orderForm">
+                    <div class="border p-3 mt-4">
+                        <div class="row pb-2">
+                            <h2 class="test-primary">
+                                Create Order
+                            </h2>
+                            <div class="text-end">
+                                <p id="priceSection" style="display:none;" class="font-weight-bold">
+                                    Price: <span id="priceValue"></span>
+                                </p>
+                            </div>
+                            </hr>
+                        </div>
+                        <div class="mb-3 row p-1">
+                            <label asp-for="Name" class="p-0">Name</label>
+                            <input asp-for="Name" type="text" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3 row p-1">
+                            <label asp-for="Description" class="p-0">Description</label>
+                            <input asp-for="Description" type="text" class="form-control" />
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3 row p-1">
+                            <label asp-for="Weight" class="p-0">Weight(kg)</label>
+                            <input asp-for="Weight" type="number" class="form-control" step="1" placeholder="Enter Weight" value="" />
+                            <span asp-validation-for="Weight" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3 row p-1">
+                            <label asp-for="Width" class="p-0">Width(cm)</label>
+                            <input asp-for="Width" type="number" class="form-control" step="1" placeholder="Enter Width" value="" />
+                            <span asp-validation-for="Width" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3 row p-1">
+                            <label asp-for="Length" class="p-0">Length(cm)</label>
+                            <input asp-for="Length" type="number" class="form-control" step="1" placeholder="Enter Length" value="" />
+                            <span asp-validation-for="Length" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3 row p-1">
+                            <label asp-for="Height" class="p-0">Height(cm)</label>
+                            <input asp-for="Height" type="number" class="form-control" step="1" placeholder="Enter Height" value="" />
+                            <span asp-validation-for="Height" class="text-danger"></span>
+                        </div>
+                        <div class="row">
+                            <button type="submit" id="submitOrderButton" class="btn border btn-success text-white form-control">Order</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        function calculatePrice() {
+            var width = parseInt($('#Width').val());
+            var weight = parseInt($('#Weight').val());
+            var height = parseInt($('#Height').val());
+            var length = parseInt($('#Length').val());
+
+            if (!isNaN(width) && !isNaN(weight) && !isNaN(height) && !isNaN(length) &&
+                width !== 0 && weight !== 0 && height !== 0 && length !== 0) {
+                var price = calculatePackagePrice(weight, width, length, height);
+                $('#priceValue').text(price);
+                $('#priceSection').show();
+            } else {
+                $('#priceSection').hide();
+            }
+        }
+
+        function calculatePackagePrice(weight, width, length, height) {
+            var basePrice = 5.0;
+            var weightPrice = weight * 0.1;
+            var volumePrice = width * length * height * 0.00001;
+            var totalPrice = basePrice + weightPrice + volumePrice;
+            return totalPrice.toFixed(2);
+        }
+
+        function showLoadingIndicator() {
+            $('#loading-indicator').show();
+        }
+
+        function hideLoadingIndicator() {
+            $('#loading-indicator').hide();
+        }
+
+        $('#Width, #Weight, #Height, #Length').change(function () {
+            calculatePrice();
+        });
+
+        $('#cancelButton').click(function () {
+            $('#Width').val('');
+            $('#Weight').val('');
+            $('#Height').val('');
+            $('#Length').val('');
+            $('#Name').val('');
+            $('#Description').val('');
+            $('#priceSection').hide();
+        });
+
+        $('#submitOrderButton').click(function (event) {                        
+            showLoadingIndicator();
+            var formData = $('#orderForm').serialize();            
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Create", "Orders")',
+                data: formData,
+                success: function (response) {
+                    console.log('Order created successfully');
+                    window.location.reload();
+                    $('#confirmationModal').modal('hide');
+                },
+                error: function (xhr, status, error) {                    
+                    console.error('Error creating order:', error);
+                }
+            });
+        });
+    });
+</script>
