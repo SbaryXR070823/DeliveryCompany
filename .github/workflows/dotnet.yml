@@ -3,7 +3,10 @@
 
 name: Delivery Company CI/CD
 
-on: [pull_request]
+on: 
+  pull_request:
+    branches:
+      - main
 
 
 jobs:
