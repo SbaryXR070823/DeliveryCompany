@@ -1,4 +1,6 @@
 ﻿using DeliveryCompany.DataAccess.Data;
+using DeliveryCompany.Models.DbModels;
+using DeliveryCompany.Utility.Enums;
 using Microsoft.EntityFrameworkCore;
 using Models.ViewModels;
 using Services.IServices;
@@ -7,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utility.Helpers;
 
 namespace Services.Services
 {
@@ -47,5 +50,48 @@ namespace Services.Services
 
 			return orderViewModels;
 		}
+
+		public async Task CreateOrderAsync(Packages package, string userId)
+		{
+            Packages packageOrder = new Packages
+            {
+                Width = package.Width,
+                Height = package.Height,
+                Name = package.Name,
+                Description = package.Description,
+                Weight = package.Weight,
+                Length = package.Length
+            };
+
+            await _dbContext.Packages.AddAsync(package);
+            await _dbContext.SaveChangesAsync();
+
+            Order order = new Order
+            {
+                OrderStatus = OrderStatus.Unassigned,
+                DateTime = DateTime.Now,
+                Price = OrderHelpers.CalculatePrice(package.Weight, package.Width, package.Length, package.Height),
+                UserId = userId,
+                Packages = package
+            };
+
+            await _dbContext.Orders.AddAsync(order);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var order = await _dbContext.Orders.FindAsync(id);
+            if (order is null)
+            {
+                return false;
+            }
+            var package = await _dbContext.Packages.FindAsync(order.PackagesId);
+            _dbContext.Orders.Remove(order);
+            await _dbContext.SaveChangesAsync();
+            _dbContext.Packages.Remove(package);
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
     }
 }
