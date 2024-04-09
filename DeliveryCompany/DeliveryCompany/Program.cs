@@ -6,6 +6,8 @@ using DeliveryCompany.Services.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Models.Authentification;
+using Repository.IRepository;
+using Repository.Repository;
 using Services.IServices;
 using Services.Services;
 using System;
@@ -23,6 +25,11 @@ builder.Services.AddDbContext<AppIdentityDbAccess>(
 
 builder.Services.AddDbContext<DataAppDbContext>(
     options => options.UseSqlServer(connectionStringData));
+
+builder.Services.AddTransient<ICityRepository, CityRepository>();
+builder.Services.AddTransient<IRepositoryWrapper, RepositoryWrapper>();
+builder.Services.AddTransient<IPageDescriptionRepository, PageDescriptionRepository>();
+builder.Services.AddTransient<IOrderRepository, OrderRepository>();
 
 builder.Services.AddTransient<IPageDescriptionService, PageDescriptionService>();
 builder.Services.AddTransient<ICityService, CityService>();
@@ -72,6 +79,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseMiddleware<RedirectMiddleware>();
 
 app.UseAuthorization();
 

@@ -2,38 +2,36 @@
 using DeliveryCompany.Services.IServices;
 using DeliveryCompany.Models.DbModels;
 using Microsoft.EntityFrameworkCore;
+using Repository.IRepository;
 
 namespace DeliveryCompany.Services.Services
 {
     public class CityService : ICityService
     {
-        private readonly DataAppDbContext _dbContext;
-        public CityService(DataAppDbContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
+		private IRepositoryWrapper _repositoryWrapper;
+		public CityService(IRepositoryWrapper repositoryWrapper)
+		{
+			_repositoryWrapper = repositoryWrapper;
+		}
 
-        public async Task<List<City>> GetCitiesAsync()
+		public async Task<List<City>> GetCitiesAsync()
         {
-            var result = await _dbContext.Cities.OrderBy(c => c.Name).ToListAsync();
-            return result;
-        }
+			var result = _repositoryWrapper.CityRepository.FindAll().OrderBy(x => x.Name).ToList();
+			return result;
+		}
 
 		public async Task AddNewCity(string name)
 		{
 			City city = new City { Name = name };
-			var result = await _dbContext.Cities.AddAsync(city);
-			if (result != null)
-			{
-				await _dbContext.SaveChangesAsync();
-			}
+			_repositoryWrapper.CityRepository.Create(city);
+			_repositoryWrapper.Save();
 		}
 
 		public async Task DeleteCity(int id)
 		{
-			var city = await _dbContext.Cities.FindAsync(id);
-			_dbContext.Remove(city);
-			await _dbContext.SaveChangesAsync();
+			var city = _repositoryWrapper.CityRepository.FindByCondition(x => x.CityId == id).FirstOrDefault();
+			_repositoryWrapper.CityRepository.Delete(city);
+			_repositoryWrapper.Save();
 		}
 	}
 }
