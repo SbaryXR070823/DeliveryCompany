@@ -24,6 +24,7 @@ namespace DeliveryCompany.Controllers
 		}
 
         [HttpPost]
+        [Route("Create")]
         public async Task<IActionResult> CreateAsync(OrderVM orderView)
         {
             try

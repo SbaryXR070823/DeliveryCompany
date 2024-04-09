@@ -2,6 +2,7 @@
 using DeliveryCompany.Models.DbModels;
 using DeliveryCompany.Services.IServices;
 using DeliveryCompany.Utility.Enums;
+using Repository.IRepository;
 
 
 namespace DeliveryCompany.Services.Services
@@ -9,21 +10,21 @@ namespace DeliveryCompany.Services.Services
 
 	public class PageDescriptionService : IPageDescriptionService
 	{
-		private readonly DataAppDbContext _dbContext;
-		public PageDescriptionService(DataAppDbContext dbContext)
+		private IRepositoryWrapper _repositoryWrapper;
+		public PageDescriptionService(IRepositoryWrapper repositoryWrapper)
 		{
-			_dbContext = dbContext;
+			_repositoryWrapper = repositoryWrapper;
 		}
 
 		public async Task<Models.DbModels.PageDescriptions> GetPageDescription(int Id)
 		{
-			return await _dbContext.PageDescriptions.FindAsync(Id);
+			return _repositoryWrapper.PageDescriptionRepository.FindByCondition(x => x.PageDescriptionsId.Equals(Id)).FirstOrDefault();
 		}
 
 		public async Task UpdatePageDescription(Models.DbModels.PageDescriptions pageDescriptions)
 		{
-			var result = _dbContext.PageDescriptions.Update(pageDescriptions);
-			await _dbContext.SaveChangesAsync();
+			_repositoryWrapper.PageDescriptionRepository.Update(pageDescriptions);
+			_repositoryWrapper.Save();
 		}
 	}
 }
