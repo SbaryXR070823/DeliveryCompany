@@ -1,8 +1,10 @@
 ﻿using DeliveryCompany.DataAccess.Data;
 using DeliveryCompany.Models.DbModels;
 using DeliveryCompany.Utility.Enums;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Models.Authentification;
 using Models.ViewModels;
 using Services.IServices;
 using Utility.Helpers;
@@ -11,17 +13,19 @@ namespace DeliveryCompany.Controllers
 {
 	public class OrdersController : Controller
 	{
-		private readonly IOrdersService _ordersService;
-
-		public OrdersController(IOrdersService ordersService)
-		{
-			_ordersService = ordersService;
-		}
-		public async Task<IActionResult> IndexAsync()
-		{
-			var orders = await _ordersService.GetOrdersAsync(User.GetUserId());
-			return View(orders);
-		}
+        private readonly IOrdersService _ordersService;
+        private readonly UserManager<AppUser> _userManager;
+        public OrdersController(IOrdersService ordersService, UserManager<AppUser> userManager)
+        {
+            _ordersService = ordersService;
+            _userManager = userManager;
+        }
+        [HttpGet]
+        public async Task<IActionResult> IndexAsync()
+        {
+            var orders = await _ordersService.GetOrdersAsync(User.GetUserId());
+            return View(orders);
+        }
 
         [HttpPost]
         [Route("Create")]
@@ -41,7 +45,8 @@ namespace DeliveryCompany.Controllers
                         Weight = orderView.Weight,
                         Length = orderView.Length
                     };
-                    await _ordersService.CreateOrderAsync(package, userId);
+                    var user = await _userManager.GetUserAsync(User);
+                    await _ordersService.CreateOrderAsync(package, userId, user.Address);
                     RedirectToAction("Index", "Orders");
                 }
                 return View(orderView);

@@ -17,7 +17,7 @@ namespace DeliveryCompany.Models.DbModels
         public DateTime DateTime { get; set; }
         public string UserId { get; set; }
         public int PackagesId { get; set; }
-
+        public string Address { get; set; }
         public Packages Packages { get; set; }
     }
 }

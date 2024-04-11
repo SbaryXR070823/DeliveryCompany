@@ -11,7 +11,7 @@ namespace Services.IServices
     public interface IOrdersService
     {
 		Task<List<OrderVM>> GetOrdersAsync(string userId);
-        Task CreateOrderAsync(Packages package, string userId);
+        Task CreateOrderAsync(Packages package, string userId, string address);
         Task<bool> DeleteAsync(int id);
 
 

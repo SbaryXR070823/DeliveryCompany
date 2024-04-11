@@ -49,7 +49,7 @@ namespace Services.Services
 			return orderViewModels;
 		}
 
-		public async Task CreateOrderAsync(Packages package, string userId)
+		public async Task CreateOrderAsync(Packages package, string userId, string address)
 		{
 			Packages packageOrder = new Packages
 			{
@@ -70,7 +70,8 @@ namespace Services.Services
 				DateTime = DateTime.Now,
 				Price = OrderHelpers.CalculatePrice(package.Weight, package.Width, package.Length, package.Height),
 				UserId = userId,
-				Packages = package
+				Packages = package,
+				Address = address
 			};
 
 			_repositoryWrapper.OrderRepository.Create(order);
