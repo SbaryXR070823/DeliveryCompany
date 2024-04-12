@@ -1,5 +1,6 @@
 ﻿using DeliveryCompany.DataAccess.Data;
 using DeliveryCompany.Models.DbModels;
+using DeliveryCompany.Models.Models;
 using DeliveryCompany.Utility.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -35,7 +36,7 @@ namespace DeliveryCompany.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var userId = User.GetUserId();
+                    var user = await _userManager.GetUserAsync(User);
                     Packages package = new Packages
                     {
                         Width = orderView.Width,
@@ -43,10 +44,17 @@ namespace DeliveryCompany.Controllers
                         Name = orderView.Name,
                         Description = orderView.Description,
                         Weight = orderView.Weight,
-                        Length = orderView.Length
+                        Length = orderView.Length,
+
                     };
-                    var user = await _userManager.GetUserAsync(User);
-                    await _ordersService.CreateOrderAsync(package, userId, user.Address);
+                    UserOrderInformations userOrderInformations = new UserOrderInformations
+                    {
+                        UserId = User.GetUserId(),
+                        UserAddress = user.Address,
+                        UserCityId = orderView.CityId
+                    };
+
+                    await _ordersService.CreateOrderAsync(package, userOrderInformations);
                     RedirectToAction("Index", "Orders");
                 }
                 return View(orderView);

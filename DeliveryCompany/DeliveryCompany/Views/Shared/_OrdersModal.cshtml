@@ -55,6 +55,17 @@
                             <input asp-for="Height" type="number" class="form-control" step="1" placeholder="Enter Height" value="" />
                             <span asp-validation-for="Height" class="text-danger"></span>
                         </div>
+                        <div class="mb-3 row p-1">
+                            <label asp-for="CityId" class="control-label"></label>
+                            <select asp-for="CityId" class="form-control">
+                                <option value="">Select City</option>
+                                @foreach (var city in Model.Cities)
+                                {
+                                    <option value="@city.CityId">@city.Name</option>
+                                }
+                            </select>
+                            <span asp-validation-for="CityId" class="text-danger"></span>
+                        </div>
                         <div class="row">
                             <button type="submit" id="submitOrderButton" class="btn border btn-success text-white form-control">Order</button>
                         </div>
@@ -119,9 +130,9 @@
             $('#priceSection').hide();
         });
 
-        $('#submitOrderButton').click(function (event) {                        
+        $('#submitOrderButton').click(function (event) {
             showLoadingIndicator();
-            var formData = $('#orderForm').serialize();            
+            var formData = $('#orderForm').serialize();
             $.ajax({
                 type: 'POST',
                 url: '@Url.Action("Create", "Orders")',
@@ -131,7 +142,7 @@
                     window.location.reload();
                     $('#confirmationModal').modal('hide');
                 },
-                error: function (xhr, status, error) {                    
+                error: function (xhr, status, error) {
                     console.error('Error creating order:', error);
                 }
             });

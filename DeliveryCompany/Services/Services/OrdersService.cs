@@ -1,5 +1,7 @@
 ﻿using DeliveryCompany.DataAccess.Data;
 using DeliveryCompany.Models.DbModels;
+using DeliveryCompany.Models.Models;
+using DeliveryCompany.Services.IServices;
 using DeliveryCompany.Utility.Enums;
 using Microsoft.EntityFrameworkCore;
 using Models.ViewModels;
@@ -16,13 +18,16 @@ namespace Services.Services
 {
     public class OrdersService : IOrdersService
     {
-		private IRepositoryWrapper _repositoryWrapper;
-		public OrdersService(IRepositoryWrapper repositoryWrapper)
-		{
-			_repositoryWrapper = repositoryWrapper;
-		}
+        private IRepositoryWrapper _repositoryWrapper;
+        private readonly ICityService _cityService;
+        public OrdersService(IRepositoryWrapper repositoryWrapper, ICityService cityService)
+        {
+            _repositoryWrapper = repositoryWrapper;
+            _cityService = cityService;
+        }
 
-		public async Task<List<OrderVM>> GetOrdersAsync(string userId)
+
+        public async Task<List<OrderVM>> GetOrdersAsync(string userId)
         {
 			List<OrderVM> orderViewModels = new List<OrderVM>();
 
@@ -49,34 +54,25 @@ namespace Services.Services
 			return orderViewModels;
 		}
 
-		public async Task CreateOrderAsync(Packages package, string userId, string address)
+		public async Task CreateOrderAsync(Packages package, UserOrderInformations userOrderInformations)
 		{
-			Packages packageOrder = new Packages
-			{
-				Width = package.Width,
-				Height = package.Height,
-				Name = package.Name,
-				Description = package.Description,
-				Weight = package.Weight,
-				Length = package.Length
-			};
+            _repositoryWrapper.PackageRepository.Create(package);
+            _repositoryWrapper.Save();
 
-			_repositoryWrapper.PackageRepository.Create(package);
-			_repositoryWrapper.Save();
+            Order order = new Order
+            {
+                OrderStatus = OrderStatus.Unassigned,
+                DateTime = DateTime.Now,
+                Price = OrderHelpers.CalculatePrice(package.Weight, package.Width, package.Length, package.Height),
+                UserId = userOrderInformations.UserId,
+                Packages = package,
+                Address = userOrderInformations.UserAddress,
+                CityId = userOrderInformations.UserCityId
+            };
 
-			Order order = new Order
-			{
-				OrderStatus = OrderStatus.Unassigned,
-				DateTime = DateTime.Now,
-				Price = OrderHelpers.CalculatePrice(package.Weight, package.Width, package.Length, package.Height),
-				UserId = userId,
-				Packages = package,
-				Address = address
-			};
-
-			_repositoryWrapper.OrderRepository.Create(order);
-			_repositoryWrapper.Save();
-		}
+            _repositoryWrapper.OrderRepository.Create(order);
+            _repositoryWrapper.Save();
+        }
 
         public async Task<bool> DeleteAsync(int id)
         {
@@ -92,5 +88,13 @@ namespace Services.Services
 			_repositoryWrapper.Save();
 			return true;
 		}
+
+        public async Task<OrderVM> GetCitiesWithOrderViewModel()
+        {
+            var cities = await _cityService.GetCitiesAsync();
+            OrderVM orderViewModel = new OrderVM();
+            orderViewModel.Cities = cities;
+            return orderViewModel;
+        }
     }
 }
