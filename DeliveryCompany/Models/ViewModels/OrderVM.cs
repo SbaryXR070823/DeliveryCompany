@@ -1,4 +1,5 @@
-﻿using DeliveryCompany.Utility.Enums;
+﻿using DeliveryCompany.Models.DbModels;
+using DeliveryCompany.Utility.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,5 +23,10 @@ namespace Models.ViewModels
         public int Height { get; set; }
         public DateTime DateTime { get; set; }
         public OrderStatus Status { get; set; }
+
+        public List<City> Cities { get; set; } = new List<City>();
+
+        [Required(ErrorMessage = "City is required!")]
+        public int CityId { get; set; }
     }
 }
