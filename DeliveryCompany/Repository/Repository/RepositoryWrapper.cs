@@ -15,8 +15,10 @@ namespace Repository.Repository
 		private IOrderRepository? _orderRepository;
 		private IPageDescriptionRepository? _pageDescriptionRepository;
 		private IPackageRepository? _packageRepository;
+		private IEmployeeRepository? _employeeRepository;
 
-		public ICityRepository CityRepository
+
+        public ICityRepository CityRepository
 		{
 			get
 			{
@@ -68,7 +70,20 @@ namespace Repository.Repository
 			}
 		}
 
-		public RepositoryWrapper(DataAppDbContext appDbContext)
+        public IEmployeeRepository EmployeeRepository
+        {
+            get
+            {
+                if (_employeeRepository == null)
+                {
+                    _employeeRepository = new EmployeeRepository(_appDbContext);
+                }
+
+                return _employeeRepository;
+            }
+        }
+
+        public RepositoryWrapper(DataAppDbContext appDbContext)
 		{
 			_appDbContext = appDbContext;
 		}

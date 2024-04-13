@@ -30,10 +30,13 @@ builder.Services.AddTransient<ICityRepository, CityRepository>();
 builder.Services.AddTransient<IRepositoryWrapper, RepositoryWrapper>();
 builder.Services.AddTransient<IPageDescriptionRepository, PageDescriptionRepository>();
 builder.Services.AddTransient<IOrderRepository, OrderRepository>();
+builder.Services.AddTransient<IEmployeeRepository, EmployeeRepository>();
 
 builder.Services.AddTransient<IPageDescriptionService, PageDescriptionService>();
 builder.Services.AddTransient<ICityService, CityService>();
 builder.Services.AddTransient<IOrdersService, OrdersService>();
+builder.Services.AddTransient<IEmployeeService, EmployeeService>();
+builder.Services.AddTransient<IUserService, UserService>();
 
 builder.Services.AddIdentity<AppUser, IdentityRole>(
     options =>

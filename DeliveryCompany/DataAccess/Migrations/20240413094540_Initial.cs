@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialData : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -22,6 +22,21 @@ namespace DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Cities", x => x.CityId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Employees",
+                columns: table => new
+                {
+                    EmployeeId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AssigmentStatus = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Employees", x => x.EmployeeId);
                 });
 
             migrationBuilder.CreateTable(
@@ -67,7 +82,8 @@ namespace DataAccess.Migrations
                     MaxLength = table.Column<int>(type: "int", nullable: false),
                     DeliveryCarStatus = table.Column<int>(type: "int", nullable: false),
                     AssigmentStatus = table.Column<int>(type: "int", nullable: false),
-                    CityId = table.Column<int>(type: "int", nullable: false)
+                    CityId = table.Column<int>(type: "int", nullable: false),
+                    EmployeeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -78,6 +94,11 @@ namespace DataAccess.Migrations
                         principalTable: "Cities",
                         principalColumn: "CityId",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DeliveryCars_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employees",
+                        principalColumn: "EmployeeId");
                 });
 
             migrationBuilder.CreateTable(
@@ -102,26 +123,6 @@ namespace DataAccess.Migrations
                         column: x => x.PackagesId,
                         principalTable: "Packages",
                         principalColumn: "PackagesId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Employees",
-                columns: table => new
-                {
-                    EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AssigmentStatus = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Employees", x => x.EmployeeId);
-                    table.ForeignKey(
-                        name: "FK_Employees_DeliveryCars_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalTable: "DeliveryCars",
-                        principalColumn: "DeliveryCarsId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -152,7 +153,7 @@ namespace DataAccess.Migrations
             migrationBuilder.InsertData(
                 table: "PageDescriptions",
                 columns: new[] { "PageDescriptionsId", "Description" },
-                values: new object[] { 1, "Initial Description" });
+                values: new object[] { 1, "initial description" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_DeliveryCarOrders_OrderId",
@@ -163,6 +164,12 @@ namespace DataAccess.Migrations
                 name: "IX_DeliveryCars_CityId",
                 table: "DeliveryCars",
                 column: "CityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DeliveryCars_EmployeeId",
+                table: "DeliveryCars",
+                column: "EmployeeId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_PackagesId",
@@ -178,22 +185,22 @@ namespace DataAccess.Migrations
                 name: "DeliveryCarOrders");
 
             migrationBuilder.DropTable(
-                name: "Employees");
-
-            migrationBuilder.DropTable(
                 name: "PageDescriptions");
-
-            migrationBuilder.DropTable(
-                name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "DeliveryCars");
 
             migrationBuilder.DropTable(
-                name: "Packages");
+                name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "Cities");
+
+            migrationBuilder.DropTable(
+                name: "Employees");
+
+            migrationBuilder.DropTable(
+                name: "Packages");
         }
     }
 }
