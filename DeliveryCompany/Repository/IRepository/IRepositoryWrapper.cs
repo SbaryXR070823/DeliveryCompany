@@ -11,8 +11,8 @@ namespace Repository.IRepository
 		ICityRepository CityRepository { get; }
 		IPageDescriptionRepository PageDescriptionRepository { get; }
 		IOrderRepository OrderRepository { get; }
-		
 		IPackageRepository PackageRepository { get; }
-		void Save();
+        IEmployeeRepository EmployeeRepository { get; }
+        void Save();
 	}
 }

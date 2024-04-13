@@ -30,7 +30,7 @@ namespace DeliveryCompany.DataAccess.Data
                 new PageDescriptions
                 {
                     PageDescriptionsId = 1,
-                    Description = "Initial Description"
+                    Description = "initial description"
                 }
             );
 
@@ -60,10 +60,15 @@ namespace DeliveryCompany.DataAccess.Data
             modelBuilder.Entity<DeliveryCars>()
                .HasKey(dc => dc.DeliveryCarsId);
 
+            modelBuilder.Entity<Employee>()
+                .Property(e => e.EmployeeId)
+                .ValueGeneratedOnAdd();
+
             modelBuilder.Entity<DeliveryCars>()
                 .HasOne(dc => dc.Employee)
                 .WithOne(e => e.DeliveryCars)
-                .HasForeignKey<Employee>(dc => dc.EmployeeId);
+                .HasForeignKey<DeliveryCars>(dc => dc.EmployeeId)
+                .IsRequired(false);
 
             modelBuilder.Entity<DeliveryCars>()
                 .HasOne(dc => dc.City)

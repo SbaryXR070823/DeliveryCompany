@@ -1,0 +1,79 @@
+﻿@using Models.ViewModels
+@model UserRoleVM
+<div class="container">
+    <div class="row pt-4 pb-3">
+        <div class="col-6">
+            <div class="row">
+                <h2 class="text-primary">
+                    User Management
+                </h2>
+            </div>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="UserManagement" asp-action="Create" class=" btn btn-dark">
+                <i class="bi bi-plus-circle"></i> Create User
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header">
+                    <h1>Admin Users</h1>
+                </div>
+                <div class="card-body">
+                    @foreach (var user in Model.AdminUsers)
+                    {
+                        <div>
+                            <p><b>Email:</b> @user.Email</p>
+                            <p><b>Role:</b> @user.Role</p>
+                            <p><b>Address:</b> @user.Address</p>
+                            <hr> 
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header">
+                    <h1>Employee Users</h1>
+                </div>
+                <div class="card-body">
+                    @foreach (var user in Model.EmployeeUsers)
+                    {
+                        <div>
+                            <p><b>Email:</b> @user.Email</p>
+                            <p><b>Role:</b> @user.Role</p>
+                            <p><b>Address:</b> @user.Address</p>
+                            <hr> 
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header">
+                    <h1>Regular Users</h1>
+                </div>
+                <div class="card-body">
+                    @foreach (var user in Model.RegularUsers)
+                    {
+                        <div>
+                            <p><b>Email:</b> @user.Email</p>
+                            <p><b>Role:</b> @user.Role</p>
+                            <p><b>Address:</b> @user.Address</p>
+                            <hr> 
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}
