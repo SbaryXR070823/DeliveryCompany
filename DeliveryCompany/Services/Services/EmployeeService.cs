@@ -24,21 +24,19 @@ namespace Services.Services
 			Employee employee = new Employee();
             employee.Name = employeeToAdd.Name;
             employee.UserId = employeeToAdd.UserId;
-   //         var lastEmployee = _repositoryWrapper.EmployeeRepository
-			//	.FindAll()
-			//	.OrderByDescending(x => x.EmployeeId)
-			//	.FirstOrDefault();
-			//if (lastEmployee != null)
-			//{
-			//	employee.EmployeeId = lastEmployee.EmployeeId++;
-			//}
-			//else
-			//{
-			//	employee.EmployeeId = 1;
-			//}
 			employee.AssigmentStatus = DeliveryCompany.Utility.Enums.AssigmentStatus.Unassigned;
 			_repositoryWrapper.EmployeeRepository.Create(employee);
 			_repositoryWrapper.Save();
 		}
-	}
+
+        public async Task DeleteEmployeeByUserId(string userId)
+        {
+            var employee = _repositoryWrapper.EmployeeRepository.FindByCondition(x => x.UserId.Equals(userId)).FirstOrDefault();
+            if (employee != null)
+            {
+                _repositoryWrapper.EmployeeRepository.Delete(employee);
+                _repositoryWrapper.Save();
+            }
+        }
+    }
 }

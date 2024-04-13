@@ -29,6 +29,7 @@ namespace Services.Services
 				userRoleInfo.Email = user.Email;
 				userRoleInfo.Address = user.Address;
 				usersToReturn.Add(userRoleInfo);
+				userRoleInfo.UserId = user.Id;
 			}
 			return usersToReturn;
 		}

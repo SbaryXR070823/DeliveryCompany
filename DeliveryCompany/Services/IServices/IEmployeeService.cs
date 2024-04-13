@@ -10,5 +10,6 @@ namespace DeliveryCompany.Services.IServices
     public interface IEmployeeService
     {
         Task AddNewEMployee(EmployeeToAdd employeeToAdd);
+        Task DeleteEmployeeByUserId(string userId);
     }
 }

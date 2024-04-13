@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(DataAppDbContext))]
-    [Migration("20240412172454_InitialData")]
-    partial class InitialData
+    [Migration("20240413094540_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,6 +77,9 @@ namespace DataAccess.Migrations
                     b.Property<int>("DeliveryCarStatus")
                         .HasColumnType("int");
 
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
                     b.Property<int>("MaxHeight")
                         .HasColumnType("int");
 
@@ -93,13 +96,19 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("CityId");
 
+                    b.HasIndex("EmployeeId")
+                        .IsUnique();
+
                     b.ToTable("DeliveryCars");
                 });
 
             modelBuilder.Entity("DeliveryCompany.Models.DbModels.Employee", b =>
                 {
                     b.Property<int>("EmployeeId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmployeeId"));
 
                     b.Property<int>("AssigmentStatus")
                         .HasColumnType("int");
@@ -209,7 +218,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             PageDescriptionsId = 1,
-                            Description = "Initial Description"
+                            Description = "initial description"
                         });
                 });
 
@@ -240,18 +249,13 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DeliveryCompany.Models.DbModels.Employee", "Employee")
+                        .WithOne("DeliveryCars")
+                        .HasForeignKey("DeliveryCompany.Models.DbModels.DeliveryCars", "EmployeeId");
+
                     b.Navigation("City");
-                });
 
-            modelBuilder.Entity("DeliveryCompany.Models.DbModels.Employee", b =>
-                {
-                    b.HasOne("DeliveryCompany.Models.DbModels.DeliveryCars", "DeliveryCars")
-                        .WithOne("Employee")
-                        .HasForeignKey("DeliveryCompany.Models.DbModels.Employee", "EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DeliveryCars");
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("DeliveryCompany.Models.DbModels.Order", b =>
@@ -270,9 +274,9 @@ namespace DataAccess.Migrations
                     b.Navigation("DeliveryCarsInCity");
                 });
 
-            modelBuilder.Entity("DeliveryCompany.Models.DbModels.DeliveryCars", b =>
+            modelBuilder.Entity("DeliveryCompany.Models.DbModels.Employee", b =>
                 {
-                    b.Navigation("Employee")
+                    b.Navigation("DeliveryCars")
                         .IsRequired();
                 });
 
