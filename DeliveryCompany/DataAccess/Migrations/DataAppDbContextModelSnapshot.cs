@@ -74,7 +74,7 @@ namespace DataAccess.Migrations
                     b.Property<int>("DeliveryCarStatus")
                         .HasColumnType("int");
 
-                    b.Property<int>("EmployeeId")
+                    b.Property<int?>("EmployeeId")
                         .HasColumnType("int");
 
                     b.Property<int>("MaxHeight")
@@ -94,7 +94,8 @@ namespace DataAccess.Migrations
                     b.HasIndex("CityId");
 
                     b.HasIndex("EmployeeId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[EmployeeId] IS NOT NULL");
 
                     b.ToTable("DeliveryCars");
                 });

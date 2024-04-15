@@ -37,6 +37,7 @@ builder.Services.AddTransient<ICityService, CityService>();
 builder.Services.AddTransient<IOrdersService, OrdersService>();
 builder.Services.AddTransient<IEmployeeService, EmployeeService>();
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IDeliveryCarsService, DeliveryCarService>();
 
 builder.Services.AddIdentity<AppUser, IdentityRole>(
     options =>

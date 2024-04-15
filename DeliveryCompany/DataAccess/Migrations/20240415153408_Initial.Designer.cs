@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(DataAppDbContext))]
-    [Migration("20240413094540_Initial")]
+    [Migration("20240415153408_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -77,7 +77,7 @@ namespace DataAccess.Migrations
                     b.Property<int>("DeliveryCarStatus")
                         .HasColumnType("int");
 
-                    b.Property<int>("EmployeeId")
+                    b.Property<int?>("EmployeeId")
                         .HasColumnType("int");
 
                     b.Property<int>("MaxHeight")
@@ -97,7 +97,8 @@ namespace DataAccess.Migrations
                     b.HasIndex("CityId");
 
                     b.HasIndex("EmployeeId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[EmployeeId] IS NOT NULL");
 
                     b.ToTable("DeliveryCars");
                 });
