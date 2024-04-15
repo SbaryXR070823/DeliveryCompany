@@ -21,8 +21,8 @@ namespace DeliveryCompany.Models.DbModels
         public AssigmentStatus AssigmentStatus { get; set;}
 
         public int CityId { get; set; }
-        public int EmployeeId { get; set; }
+        public int? EmployeeId { get; set; }
         public City City { get; set; }
-        public Employee Employee { get; set; }
+        public Employee? Employee { get; set; }
     }
 }

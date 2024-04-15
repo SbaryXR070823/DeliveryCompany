@@ -83,7 +83,7 @@ namespace DataAccess.Migrations
                     DeliveryCarStatus = table.Column<int>(type: "int", nullable: false),
                     AssigmentStatus = table.Column<int>(type: "int", nullable: false),
                     CityId = table.Column<int>(type: "int", nullable: false),
-                    EmployeeId = table.Column<int>(type: "int", nullable: false)
+                    EmployeeId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -169,7 +169,8 @@ namespace DataAccess.Migrations
                 name: "IX_DeliveryCars_EmployeeId",
                 table: "DeliveryCars",
                 column: "EmployeeId",
-                unique: true);
+                unique: true,
+                filter: "[EmployeeId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_PackagesId",
