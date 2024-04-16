@@ -1,6 +1,7 @@
 ﻿using DeliveryCompany.Models.DbModels;
 using DeliveryCompany.Models.Models;
 using DeliveryCompany.Services.IServices;
+using DeliveryCompany.Utility.Enums;
 using Repository.IRepository;
 using Services.IServices;
 using System;
@@ -37,6 +38,30 @@ namespace Services.Services
                 _repositoryWrapper.EmployeeRepository.Delete(employee);
                 _repositoryWrapper.Save();
             }
+        }
+
+        public async Task UpdateEmployeeAssigmentStatus(int employeeId, AssigmentStatus assigmentStatus)
+        {
+            var employee = _repositoryWrapper.EmployeeRepository.FindByCondition(x => x.EmployeeId.Equals(employeeId)).FirstOrDefault();
+            employee.AssigmentStatus = assigmentStatus;
+            _repositoryWrapper.EmployeeRepository.Update(employee);
+            _repositoryWrapper.Save();
+        }
+
+        public Employee GetEmployeeById(int employeeId)
+        {
+            var employee = _repositoryWrapper.EmployeeRepository.FindByCondition(x => x.EmployeeId.Equals(employeeId)).FirstOrDefault();
+            return employee;
+        }
+
+        public async Task<List<Employee>> GetAllEmployeesByStatus(AssigmentStatus assigmentStatus)
+        {
+            var employess = _repositoryWrapper.EmployeeRepository.FindByCondition(x => x.AssigmentStatus.Equals(assigmentStatus)).ToList();
+            if (employess != null)
+            {
+                return employess;
+            }
+            return new List<Employee>();
         }
     }
 }

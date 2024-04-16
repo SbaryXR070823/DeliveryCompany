@@ -89,6 +89,7 @@ namespace DeliveryCompany.Controllers
                 Name = user.Name,
                 Address = user.Address,
                 Email = user.Email,
+                OldEmail = user.Email,
                 Role = userRole.FirstOrDefault(),
             };
             return View(employeeToAdd);
@@ -99,7 +100,7 @@ namespace DeliveryCompany.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(userToEdit.Email);
+                var user = await _userManager.FindByEmailAsync(userToEdit.OldEmail);
                 var userRole = await _userManager.GetRolesAsync(user);
                 user.Email = userToEdit.Email;
                 user.Name = userToEdit.Name;

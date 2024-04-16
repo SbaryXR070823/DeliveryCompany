@@ -1,0 +1,70 @@
+﻿@using DeliveryCompany.Models.ViewModels
+@model DeliveryCarCreationVM
+@{
+    ViewData["Title"] = "Delivery Cars Creation";
+}
+
+<div class="row d-flex align-items-center justify-content-center">
+    <div class="p-3">
+        <h2 class="text-center text-primary">Create DeliveryCar</h2>
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly"></div>
+            <input type="hidden" name="Employees" value="@Html.Raw(Json.Serialize(Model.Employees))" />
+            <div class="mb-1">
+                <label asp-for="CityId" class="control-label"></label>
+                <input asp-for="CityId" class="form-control" readonly />
+                <span asp-validation-for="CityId" class="text-danger"></span>
+            </div>
+            <div class="mb-1">
+                <label asp-for="MaxWeight" class="control-label">MaxWeight kg</label>
+                <input asp-for="MaxWeight" class="form-control" />
+                <span asp-validation-for="MaxWeight" class="text-danger"></span>
+            </div>
+            <div class="mb-1">
+                <label asp-for="MaxLength" class="control-label">MaxLength cm</label>
+                <input asp-for="MaxLength" class="form-control" />
+                <span asp-validation-for="MaxLength" class="text-danger"></span>
+            </div>
+            <div class="mb-1">
+                <label asp-for="MaxHeight" class="control-label">MaxHeight cm</label>
+                <input asp-for="MaxHeight" class="form-control" />
+                <span asp-validation-for="MaxHeight" class="text-danger"></span>
+            </div>
+            <div class="mb-1">
+                <label asp-for="MaxWidth" class="control-label">MaxWidth cm</label>
+                <input asp-for="MaxWidth" class="form-control" />
+                <span asp-validation-for="MaxWidth" class="text-danger"></span>
+            </div>
+            <div class="mb-1">
+                <label asp-for="EmployeeId" class="control-label"></label>
+                <select asp-for="EmployeeId" class="form-control" id="roleSelect">
+                    <option value="">Select Role</option>
+                    @foreach (var employee in Model.Employees)
+                    {
+                        if (employee is not null)
+                        {
+                            <option value="@employee.EmployeeId">@employee.Name</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="EmployeeId" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="col-8">
+                    <a asp-action="Index" class="text-info text-decoration-none float-start mt-2">
+                        <i class="bi bi-arrow-left"></i> Back to User Management
+                    </a>
+                </div>
+                <div class="col-4">
+                    <input type="submit" value="Create" class="btn btn-primary btn-sm float-end mt-1" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
