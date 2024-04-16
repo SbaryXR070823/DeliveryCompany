@@ -16,7 +16,7 @@ namespace Models.ViewModels
         [DataType(DataType.Password)]
         public string? Password { get; set; }
 
-        [Display(Name = "Remeber me")]
+        [Display(Name = "Remember me")]
         public bool RemembeMe { get; set; }
     }
 }

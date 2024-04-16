@@ -69,6 +69,24 @@ using (var scope = app.Services.CreateScope())
         if (!await roleManager.RoleExistsAsync(role))
             await roleManager.CreateAsync(new IdentityRole(role));
     }
+
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+    var adminUser = await userManager.FindByNameAsync("admin");
+    if (adminUser == null)
+    {
+        var newAdmin = new AppUser
+        {
+            Name = "admin",
+            Email = "admin@admin.com",
+            UserName = "admin",
+            Address = "admin",
+        };
+        var result = await userManager.CreateAsync(newAdmin, "123456789");
+        if (result.Succeeded)
+        {
+            await userManager.AddToRoleAsync(newAdmin, UserRoles.Admin);
+        }
+    }
 }
 
 // Configure the HTTP request pipeline.

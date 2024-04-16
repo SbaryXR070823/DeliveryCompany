@@ -1,4 +1,5 @@
-﻿using DeliveryCompany.DataAccess.Data;
+﻿using Constants.Authentification;
+using DeliveryCompany.DataAccess.Data;
 using DeliveryCompany.Models.DbModels;
 using DeliveryCompany.Models.Models;
 using DeliveryCompany.Utility.Enums;
@@ -24,8 +25,16 @@ namespace DeliveryCompany.Controllers
         [HttpGet]
         public async Task<IActionResult> IndexAsync()
         {
-            var orders = await _ordersService.GetOrdersAsync(User.GetUserId());
-            return View(orders);
+            if (!User.IsInRole(UserRoles.Admin))
+            {
+                var orders = await _ordersService.GetOrdersAsync(User.GetUserId());
+                return View(orders);
+            }
+            else
+            {
+                var orders = await _ordersService.GetOrdersAsync();
+                return View(orders);
+            }
         }
 
         [HttpPost]
