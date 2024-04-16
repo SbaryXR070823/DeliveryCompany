@@ -20,6 +20,11 @@ public class RedirectMiddleware
             return; 
 		}
 
+        if (context.Request.Path.Equals("/undefined"))
+        {
+            return;
+        }
+
         if (context.Request.Path == "/Orders" && context.Request.Method == "POST")
         {
             context.Request.Method = "GET";

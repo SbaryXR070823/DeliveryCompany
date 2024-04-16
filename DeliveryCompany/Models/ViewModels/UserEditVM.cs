@@ -30,5 +30,7 @@ namespace Models.ViewModels
 
         [Required(ErrorMessage = "Role is required!")]
         public string? Role { get; set; }
+
+        public string OldEmail { get; set; }
     }
 }

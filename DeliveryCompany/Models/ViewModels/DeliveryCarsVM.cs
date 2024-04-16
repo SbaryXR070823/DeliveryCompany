@@ -12,6 +12,7 @@ namespace DeliveryCompany.Models.ViewModels
 	public class DeliveryCarsVM
 	{
 		public List<DeliveryCars> Cars { get; set; }
-	}
+        public List<City> Cities { get; set; }
+    }
 }
 
