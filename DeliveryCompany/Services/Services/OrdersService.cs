@@ -27,35 +27,43 @@ namespace Services.Services
         }
 
 
-        public async Task<List<OrderVM>> GetOrdersAsync(string userId)
+        public async Task<List<OrderVM>> GetOrdersAsync(string userId = null)
         {
-			List<OrderVM> orderViewModels = new List<OrderVM>();
+            List<OrderVM> orderViewModels = new List<OrderVM>();
+            List<Order>? ordersList = new List<Order>();
+            if (string.IsNullOrEmpty(userId))
+            {
+                ordersList = _repositoryWrapper.OrderRepository.FindAll().ToList();
 
-			var ordersList = _repositoryWrapper.OrderRepository.FindByCondition(x => x.UserId.Equals(userId)).ToList();
-			foreach (var order in ordersList)
-			{
-				var package = _repositoryWrapper.PackageRepository.FindByCondition(x => x.PackagesId.Equals(order.PackagesId)).FirstOrDefault();
-				OrderVM orderViewModel = new OrderVM
-				{
-					Id = order.OrderId,
-					Price = order.Price,
-					Name = package.Name,
-					Description = package.Description,
-					Weight = package.Weight,
-					Width = package.Width,
-					Length = package.Length,
-					Height = package.Height,
-					DateTime = order.DateTime,
-					Status = order.OrderStatus
-				};
-				orderViewModels.Add(orderViewModel);
-			}
+            }
+            else
+            {
+                ordersList = _repositoryWrapper.OrderRepository.FindByCondition(x => x.UserId.Equals(userId)).ToList();
+            }
+            foreach (var order in ordersList)
+            {
+                var package = _repositoryWrapper.PackageRepository.FindByCondition(x => x.PackagesId.Equals(order.PackagesId)).FirstOrDefault();
+                OrderVM orderViewModel = new OrderVM
+                {
+                    Id = order.OrderId,
+                    Price = order.Price,
+                    Name = package.Name,
+                    Description = package.Description,
+                    Weight = package.Weight,
+                    Width = package.Width,
+                    Length = package.Length,
+                    Height = package.Height,
+                    DateTime = order.DateTime,
+                    Status = order.OrderStatus
+                };
+                orderViewModels.Add(orderViewModel);
+            }
 
-			return orderViewModels;
-		}
+            return orderViewModels;
+        }
 
-		public async Task CreateOrderAsync(Packages package, UserOrderInformations userOrderInformations)
-		{
+        public async Task CreateOrderAsync(Packages package, UserOrderInformations userOrderInformations)
+        {
             _repositoryWrapper.PackageRepository.Create(package);
             _repositoryWrapper.Save();
 
@@ -76,18 +84,18 @@ namespace Services.Services
 
         public async Task<bool> DeleteAsync(int id)
         {
-			var order = _repositoryWrapper.OrderRepository.FindByCondition(x => x.OrderId.Equals(id)).FirstOrDefault();
-			if (order is null)
-			{
-				return false;
-			}
-			var package = _repositoryWrapper.PackageRepository.FindByCondition(x => x.PackagesId.Equals(order.PackagesId)).FirstOrDefault();
-			_repositoryWrapper.OrderRepository.Delete(order);
-			_repositoryWrapper.Save();
-			_repositoryWrapper.PackageRepository.Delete(package);
-			_repositoryWrapper.Save();
-			return true;
-		}
+            var order = _repositoryWrapper.OrderRepository.FindByCondition(x => x.OrderId.Equals(id)).FirstOrDefault();
+            if (order is null)
+            {
+                return false;
+            }
+            var package = _repositoryWrapper.PackageRepository.FindByCondition(x => x.PackagesId.Equals(order.PackagesId)).FirstOrDefault();
+            _repositoryWrapper.OrderRepository.Delete(order);
+            _repositoryWrapper.Save();
+            _repositoryWrapper.PackageRepository.Delete(package);
+            _repositoryWrapper.Save();
+            return true;
+        }
 
         public async Task<OrderVM> GetCitiesWithOrderViewModel()
         {
