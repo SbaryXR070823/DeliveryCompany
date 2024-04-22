@@ -1,0 +1,72 @@
+﻿@using DeliveryCompany.Models.ViewModels
+@using DeliveryCompany.Services.IServices
+@using Services.IServices
+@{
+	ViewData["Title"] = "Orders Page";
+}
+@model List<DeliveryOrdersVM>
+@inject IOrdersService _orderService;
+<div class="container">
+	<div class="row pt-4 pb-3">
+		<div class="col-6">
+			<div class="row">
+				<h2 class="text-primary">
+					Deliveries List
+				</h2>
+			</div>
+		</div>
+	</div>
+	@if (Model.Count != 0)
+	{
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>
+						Delivery Id
+					</th>
+					<th>
+						Delivery Status
+					</th>
+					<th>
+						Date Time
+					</th>
+					<th>
+						Order Id
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var obj in Model.OrderBy(
+						m => m.DeliveryCarOrder.DateTime))
+				{
+					<tr class="clickable">
+						<td>
+							@obj.DeliveryCarOrder.DeliveryId
+						</td>
+						<td>
+							@obj.DeliveryCarOrder.DeliveryStatus.ToString()
+						</td>
+						<td>
+							@obj.DeliveryCarOrder.DateTime
+						</td>
+						<td>
+							@obj.DeliveryCarOrder.OrderId
+						</td>
+					</tr>
+				}
+			</tbody>
+
+		</table>
+	}
+	else
+	{
+		<p>No Data to display!</p>
+	}
+</div>
+
+
+@section Scripts {
+	@{
+		<partial name="_ValidationScriptsPartial" />
+	}
+}

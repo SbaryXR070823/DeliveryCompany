@@ -81,5 +81,11 @@ namespace DeliveryCompany.Services.Services
             _repositoryWrapper.DeliveryCarsRepository.Update(deliveryCar);
             _repositoryWrapper.Save();
         }
+
+        public DeliveryCars GetDeliveryCarByEmployeeId(int employeeId)
+        {
+            var deliveryCar = _repositoryWrapper.DeliveryCarsRepository.FindByCondition(c => c.EmployeeId.Equals(employeeId)).FirstOrDefault();
+            return deliveryCar;
+        }
     }
 }

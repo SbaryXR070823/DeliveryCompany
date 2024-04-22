@@ -13,8 +13,8 @@ namespace Repository.IRepository
 		IOrderRepository OrderRepository { get; }
 		IPackageRepository PackageRepository { get; }
         IEmployeeRepository EmployeeRepository { get; }
-
 		IDeliveryCarsRepository DeliveryCarsRepository { get; }
-		void Save();
+        IDeliveryRepository DeliveryRepository { get; }
+        void Save();
 	}
 }

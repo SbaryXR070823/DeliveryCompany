@@ -130,12 +130,16 @@ namespace DataAccess.Migrations
                 name: "DeliveryCarOrders",
                 columns: table => new
                 {
+                    DeliveryId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     DeliveryCarId = table.Column<int>(type: "int", nullable: false),
-                    OrderId = table.Column<int>(type: "int", nullable: false)
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    DeliveryStatus = table.Column<int>(type: "int", nullable: false),
+                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DeliveryCarOrders", x => new { x.DeliveryCarId, x.OrderId });
+                    table.PrimaryKey("PK_DeliveryCarOrders", x => x.DeliveryId);
                     table.ForeignKey(
                         name: "FK_DeliveryCarOrders_DeliveryCars_DeliveryCarId",
                         column: x => x.DeliveryCarId,
@@ -154,6 +158,11 @@ namespace DataAccess.Migrations
                 table: "PageDescriptions",
                 columns: new[] { "PageDescriptionsId", "Description" },
                 values: new object[] { 1, "initial description" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DeliveryCarOrders_DeliveryCarId",
+                table: "DeliveryCarOrders",
+                column: "DeliveryCarId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DeliveryCarOrders_OrderId",

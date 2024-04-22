@@ -27,12 +27,12 @@ namespace DeliveryCompany.DataAccess.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<PageDescriptions>().HasData(
-                new PageDescriptions
-                {
-                    PageDescriptionsId = 1,
-                    Description = "initial description"
-                }
-            );
+              new PageDescriptions
+              {
+                  PageDescriptionsId = 1,
+                  Description = "initial description"
+              }
+          );
 
             modelBuilder.Entity<DeliveryCarOrder>().HasKey(
                 dco => new { dco.DeliveryCarId, dco.OrderId });
@@ -42,9 +42,6 @@ namespace DeliveryCompany.DataAccess.Data
                .WithOne(p => p.Order)
                .HasForeignKey<Order>(o => o.PackagesId)
                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<DeliveryCarOrder>()
-               .HasKey(dc => new { dc.DeliveryCarId, dc.OrderId });
 
             modelBuilder.Entity<DeliveryCarOrder>()
                 .HasOne(dc => dc.DeliveryCars)
@@ -59,6 +56,13 @@ namespace DeliveryCompany.DataAccess.Data
 
             modelBuilder.Entity<DeliveryCars>()
                .HasKey(dc => dc.DeliveryCarsId);
+
+            modelBuilder.Entity<DeliveryCarOrder>()
+                .HasKey(dco => dco.DeliveryId);
+
+            modelBuilder.Entity<DeliveryCarOrder>()
+               .Property(dco => dco.DeliveryId)
+               .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<Employee>()
                 .Property(e => e.EmployeeId)

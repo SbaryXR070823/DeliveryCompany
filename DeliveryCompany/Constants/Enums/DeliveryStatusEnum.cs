@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace DeliveryCompany.Utility.Enums
 {
-    public enum DeliveryCarStatus
-    {
-        Free = 0,
-        Delivering = 1
-    }
+	public enum DeliveryStatusEnum
+	{
+		Pending = 0,
+		InTransit = 1,
+		Finished = 2,
+	}
 }
