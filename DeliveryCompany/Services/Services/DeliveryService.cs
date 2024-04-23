@@ -78,6 +78,7 @@ namespace DeliveryCompany.Services.Services
 
                         _repositoryWrapper.DeliveryRepository.Create(delivery);
                         _repositoryWrapper.Save();
+                        await _ordersService.UpdateStatusOfOrder(order.OrderId, OrderStatus.Processing);
                         isOrderCreated = true;
                     }
                     else
@@ -124,6 +125,7 @@ namespace DeliveryCompany.Services.Services
 
                             _repositoryWrapper.DeliveryRepository.Create(delivery);
                             _repositoryWrapper.Save();
+                            await _ordersService.UpdateStatusOfOrder(order.OrderId, OrderStatus.Processing);
                             isOrderCreated = true;
                         }
                     }

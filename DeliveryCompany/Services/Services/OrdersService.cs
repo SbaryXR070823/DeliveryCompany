@@ -114,5 +114,13 @@ namespace Services.Services
             var package = _repositoryWrapper.PackageRepository.FindByCondition(p => p.PackagesId.Equals(packageId)).FirstOrDefault();
             return package;
         }
+
+        public async Task UpdateStatusOfOrder(int orderId, OrderStatus orderStatus)
+        {
+            var order = _repositoryWrapper.OrderRepository.FindByCondition(o => o.OrderId.Equals(orderId)).FirstOrDefault();
+            order.OrderStatus = orderStatus;
+            _repositoryWrapper.OrderRepository.Update(order);
+            _repositoryWrapper.Save();
+        }
     }
 }

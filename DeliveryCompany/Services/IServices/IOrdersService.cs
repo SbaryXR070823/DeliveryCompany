@@ -1,5 +1,6 @@
 ﻿using DeliveryCompany.Models.DbModels;
 using DeliveryCompany.Models.Models;
+using DeliveryCompany.Utility.Enums;
 using Models.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace Services.IServices
         Task<bool> DeleteAsync(int id);
         Task<OrderVM> GetCitiesWithOrderViewModel();
         Task<Packages> GetPackagesByPackageIdIdAsync(int packageId);
+        Task UpdateStatusOfOrder(int orderId, OrderStatus orderStatus);
 
 
     }
