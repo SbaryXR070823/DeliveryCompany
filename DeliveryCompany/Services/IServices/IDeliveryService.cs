@@ -10,7 +10,7 @@ namespace DeliveryCompany.Services.IServices
 {
 	public interface IDeliveryService
 	{
-		Task<List<DeliveryOrdersVM>> GetOrdersByEmployeeId(int carId);
+		Task<List<DeliveryOrdersVM>> GetOrdersByCarId(int carId);
 		Task CreateOrUpdateDeliveryWithOrder(Order order);
 
     }

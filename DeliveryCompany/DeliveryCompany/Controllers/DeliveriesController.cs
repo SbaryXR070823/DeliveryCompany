@@ -33,7 +33,7 @@ public class DeliveriesController : Controller
 		{
 			return View(new List<DeliveryOrdersVM>());
 		}
-		var deliveries = await _deliveryService.GetOrdersByEmployeeId(deliveryCar.DeliveryCarsId);
+		var deliveries = await _deliveryService.GetOrdersByCarId(deliveryCar.DeliveryCarsId);
         return View(deliveries);
     }
 }

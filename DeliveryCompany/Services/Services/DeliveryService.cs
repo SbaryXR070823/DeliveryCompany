@@ -26,10 +26,12 @@ namespace DeliveryCompany.Services.Services
             _ordersService = ordersService;
         }
 
-        public async Task<List<DeliveryOrdersVM>> GetOrdersByEmployeeId(int carId)
+        public async Task<List<DeliveryOrdersVM>> GetOrdersByCarId(int carId)
         {
             List<DeliveryOrdersVM> deliveryOrdersVMs = new List<DeliveryOrdersVM>();
-            var delivery = _repositoryWrapper.DeliveryRepository.FindByCondition(d => d.DeliveryCarId.Equals(carId)).ToList();
+            var delivery = _repositoryWrapper.DeliveryRepository.FindByCondition(d => d.DeliveryCarId.Equals(carId)).ToList().GroupBy(d => d.DeliveryId)
+                .Select(group => group.OrderBy(o => o.DateTime).First())
+                .ToList(); 
             foreach (var deliveryOrder in delivery)
             {
                 var orders = _repositoryWrapper.OrderRepository.FindByCondition(o => o.OrderId.Equals(deliveryOrder.OrderId)).ToList();
@@ -64,12 +66,14 @@ namespace DeliveryCompany.Services.Services
                         deliveryCar.MaxWidth > package.Width &&
                         deliveryCar.MaxLength > package.Length)
                     {
+                        var lastDelivery = _repositoryWrapper.DeliveryRepository.FindAll().OrderByDescending(x => x.DeliveryId).ToList();
                         DeliveryCarOrder delivery = new DeliveryCarOrder()
                         {
                             DeliveryCarId = deliveryCar.DeliveryCarsId,
                             DateTime = DateTime.Now,
                             DeliveryStatus = DeliveryStatusEnum.Pending,
                             OrderId = order.OrderId,
+                            DeliveryId = lastDelivery.FirstOrDefault() is null ? 1 : (++lastDelivery.FirstOrDefault().DeliveryId)
                         };
 
                         _repositoryWrapper.DeliveryRepository.Create(delivery);
@@ -108,12 +112,14 @@ namespace DeliveryCompany.Services.Services
                        deliveryCar.MaxWidth > package.Width &&
                        deliveryCar.MaxLength > package.Length)
                         {
+                            var deliveryOrder = _repositoryWrapper.DeliveryRepository.FindByCondition(dco => dco.DeliveryCarId.Equals(deliveryCar.DeliveryCarsId)).FirstOrDefault();
                             DeliveryCarOrder delivery = new DeliveryCarOrder()
                             {
                                 DeliveryCarId = deliveryCar.DeliveryCarsId,
                                 DateTime = DateTime.Now,
                                 DeliveryStatus = DeliveryStatusEnum.Pending,
                                 OrderId = order.OrderId,
+                                DeliveryId = deliveryOrder.DeliveryId,
                             };
 
                             _repositoryWrapper.DeliveryRepository.Create(delivery);

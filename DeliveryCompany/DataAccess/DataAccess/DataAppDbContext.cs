@@ -57,13 +57,6 @@ namespace DeliveryCompany.DataAccess.Data
             modelBuilder.Entity<DeliveryCars>()
                .HasKey(dc => dc.DeliveryCarsId);
 
-            modelBuilder.Entity<DeliveryCarOrder>()
-                .HasKey(dco => dco.DeliveryId);
-
-            modelBuilder.Entity<DeliveryCarOrder>()
-               .Property(dco => dco.DeliveryId)
-               .ValueGeneratedOnAdd();
-
             modelBuilder.Entity<Employee>()
                 .Property(e => e.EmployeeId)
                 .ValueGeneratedOnAdd();

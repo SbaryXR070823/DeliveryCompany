@@ -25,7 +25,6 @@ namespace DeliveryCompany.Models.DbModels
         public DateTime DateTime { get; set; }
 
         [Column(Order = 1)]
-        [Key]
         public int DeliveryId { get; set; }
 
         public DeliveryCars DeliveryCars { get; set; }
