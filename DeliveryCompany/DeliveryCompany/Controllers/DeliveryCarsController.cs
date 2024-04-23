@@ -1,12 +1,14 @@
 ﻿using DeliveryCompany.Models.ViewModels;
 using DeliveryCompany.Services.IServices;
 using DeliveryCompany.Services.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeliveryCompany.Controllers
 {
     [Route("[controller]")]
+    [Authorize]
     public class DeliveryCarsController : Controller
     {
         private readonly IDeliveryCarsService _deliveryCarsService;

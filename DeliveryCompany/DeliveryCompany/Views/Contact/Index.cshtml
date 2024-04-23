@@ -1,0 +1,44 @@
+﻿@using DeliveryCompany.Models.ViewModels
+@model ContactVM;
+
+@{
+    ViewData["Title"] = "Contact Page";
+}
+
+
+<div class="row d-flex align-items-center justify-content-center">
+    <div class="p-3">
+        <h2 class="text-center text-primary">Create User</h2>
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="mb-1">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="mb-1">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="mb-1">
+                <label asp-for="PhoneNumber" class="control-label"></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="mb-1">
+                <label asp-for="Message" class="control-label"></label>
+                <textarea asp-for="Message" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Message" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="col-12 text-center">
+                    <input type="submit" value="Send Message" class="btn btn-primary btn-sm mt-1" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+}

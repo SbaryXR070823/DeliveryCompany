@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Models.ViewModels;
 using Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DeliveryCompany.Controllers
 {
+    [Authorize]
     public class UserManagementController : Controller
     {
         private readonly IUserService _userService;
