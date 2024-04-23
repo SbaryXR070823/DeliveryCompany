@@ -44,11 +44,21 @@ namespace DataAccess.Migrations
                 {
                     b.Property<int>("DeliveryCarId")
                         .HasColumnType("int")
-                        .HasColumnOrder(1);
+                        .HasColumnOrder(2);
 
                     b.Property<int>("OrderId")
                         .HasColumnType("int")
-                        .HasColumnOrder(2);
+                        .HasColumnOrder(3);
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DeliveryId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
+
+                    b.Property<int>("DeliveryStatus")
+                        .HasColumnType("int");
 
                     b.HasKey("DeliveryCarId", "OrderId");
 

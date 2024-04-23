@@ -16,5 +16,6 @@ namespace DeliveryCompany.Services.IServices
         Task<List<Employee>> GetAllEmployeesByStatus(AssigmentStatus assigmentStatus);
         Task UpdateEmployeeAssigmentStatus(int employeeId, AssigmentStatus assigmentStatus);
         Employee GetEmployeeById(int employeeId);
+        Employee GetEmployeeByUserId(string userId);
     }
 }

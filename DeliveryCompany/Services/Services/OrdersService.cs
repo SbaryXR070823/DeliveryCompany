@@ -62,7 +62,7 @@ namespace Services.Services
             return orderViewModels;
         }
 
-        public async Task CreateOrderAsync(Packages package, UserOrderInformations userOrderInformations)
+        public async Task<Order> CreateOrderAsync(Packages package, UserOrderInformations userOrderInformations)
         {
             _repositoryWrapper.PackageRepository.Create(package);
             _repositoryWrapper.Save();
@@ -80,6 +80,7 @@ namespace Services.Services
 
             _repositoryWrapper.OrderRepository.Create(order);
             _repositoryWrapper.Save();
+            return order;
         }
 
         public async Task<bool> DeleteAsync(int id)
@@ -94,6 +95,9 @@ namespace Services.Services
             _repositoryWrapper.Save();
             _repositoryWrapper.PackageRepository.Delete(package);
             _repositoryWrapper.Save();
+            var delivery = _repositoryWrapper.DeliveryRepository.FindByCondition(d => d.OrderId.Equals(id)).FirstOrDefault();
+            _repositoryWrapper.DeliveryRepository.Delete(delivery);
+            _repositoryWrapper.Save();
             return true;
         }
 
@@ -103,6 +107,12 @@ namespace Services.Services
             OrderVM orderViewModel = new OrderVM();
             orderViewModel.Cities = cities;
             return orderViewModel;
+        }
+
+        public async Task<Packages> GetPackagesByPackageIdIdAsync(int packageId)
+        {
+            var package = _repositoryWrapper.PackageRepository.FindByCondition(p => p.PackagesId.Equals(packageId)).FirstOrDefault();
+            return package;
         }
     }
 }

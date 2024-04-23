@@ -63,5 +63,11 @@ namespace Services.Services
             }
             return new List<Employee>();
         }
+
+        public Employee GetEmployeeByUserId(string userId)
+        {
+            var employee = _repositoryWrapper.EmployeeRepository.FindByCondition(x => x.UserId.Equals(userId)).FirstOrDefault();
+            return employee;
+        }
     }
 }

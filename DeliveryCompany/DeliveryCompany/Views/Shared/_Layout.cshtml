@@ -32,11 +32,16 @@
                                 <a class="nav-link" asp-area="" asp-controller="Orders" asp-action="Index">Orders</a>
                             </li>
                         }
-                        @if (User.IsInRole(UserRoles.Admin))
+
+                        @if (User.IsInRole(UserRoles.Admin) || User.IsInRole(UserRoles.DeliveryEmployee))
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Deliveries" asp-action="Index">Deliveries</a>
                             </li>
+                        }
+
+                        @if (User.IsInRole(UserRoles.Admin))
+                        {
 
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="UserManagement" asp-action="Index">User Management</a>

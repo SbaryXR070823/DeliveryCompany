@@ -12,10 +12,10 @@ namespace Services.IServices
     public interface IOrdersService
     {
 		Task<List<OrderVM>> GetOrdersAsync(string userId=null);
-        Task CreateOrderAsync(Packages package, UserOrderInformations userOrderInformations);
+        Task<Order> CreateOrderAsync(Packages package, UserOrderInformations userOrderInformations);
         Task<bool> DeleteAsync(int id);
-
         Task<OrderVM> GetCitiesWithOrderViewModel();
+        Task<Packages> GetPackagesByPackageIdIdAsync(int packageId);
 
 
     }

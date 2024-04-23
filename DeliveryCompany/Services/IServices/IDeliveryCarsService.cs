@@ -15,5 +15,6 @@ namespace DeliveryCompany.Services.IServices
         Task AddNewDeliveryCar(DeliveryCarCreationVM deliveryCarCreationVM);
         Task<DeliveryCars> GetDeliveryCarById(int deliveryCarId);
         Task UpdateDeliveryCar(DeliveryCarCreationVM deliveryCarVM);
+        DeliveryCars GetDeliveryCarByEmployeeId(int employeeId);
     }
 }

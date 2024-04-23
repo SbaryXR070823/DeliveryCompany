@@ -130,8 +130,11 @@ namespace DataAccess.Migrations
                 name: "DeliveryCarOrders",
                 columns: table => new
                 {
+                    DeliveryId = table.Column<int>(type: "int", nullable: false),
                     DeliveryCarId = table.Column<int>(type: "int", nullable: false),
-                    OrderId = table.Column<int>(type: "int", nullable: false)
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    DeliveryStatus = table.Column<int>(type: "int", nullable: false),
+                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {

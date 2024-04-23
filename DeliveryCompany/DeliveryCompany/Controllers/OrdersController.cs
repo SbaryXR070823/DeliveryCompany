@@ -2,6 +2,7 @@
 using DeliveryCompany.DataAccess.Data;
 using DeliveryCompany.Models.DbModels;
 using DeliveryCompany.Models.Models;
+using DeliveryCompany.Services.IServices;
 using DeliveryCompany.Utility.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,10 +18,12 @@ namespace DeliveryCompany.Controllers
 	{
         private readonly IOrdersService _ordersService;
         private readonly UserManager<AppUser> _userManager;
-        public OrdersController(IOrdersService ordersService, UserManager<AppUser> userManager)
+        private readonly IDeliveryService _deliveryService;
+        public OrdersController(IOrdersService ordersService, UserManager<AppUser> userManager, IDeliveryService deliveryService)
         {
             _ordersService = ordersService;
             _userManager = userManager;
+            _deliveryService = deliveryService;
         }
         [HttpGet]
         public async Task<IActionResult> IndexAsync()
@@ -63,7 +66,8 @@ namespace DeliveryCompany.Controllers
                         UserCityId = orderView.CityId
                     };
 
-                    await _ordersService.CreateOrderAsync(package, userOrderInformations);
+                    var order = await _ordersService.CreateOrderAsync(package, userOrderInformations);
+                    await _deliveryService.CreateOrUpdateDeliveryWithOrder(order);
                     RedirectToAction("Index", "Orders");
                 }
                 return View(orderView);
