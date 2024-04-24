@@ -96,7 +96,10 @@ namespace Services.Services
             _repositoryWrapper.PackageRepository.Delete(package);
             _repositoryWrapper.Save();
             var delivery = _repositoryWrapper.DeliveryRepository.FindByCondition(d => d.OrderId.Equals(id)).FirstOrDefault();
-            _repositoryWrapper.DeliveryRepository.Delete(delivery);
+            if (delivery is not null)
+            {
+                _repositoryWrapper.DeliveryRepository.Delete(delivery);
+            }
             _repositoryWrapper.Save();
             return true;
         }
