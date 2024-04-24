@@ -11,6 +11,7 @@ using Models.Authentification;
 using Models.ViewModels;
 using Services.IServices;
 using Utility.Helpers;
+using static DeliveryCompany.Constants.Misc.MiscConstants;
 
 namespace DeliveryCompany.Controllers
 {
@@ -67,14 +68,16 @@ namespace DeliveryCompany.Controllers
                     };
 
                     var order = await _ordersService.CreateOrderAsync(package, userOrderInformations);
+                    TempData[TempDataValues.Success] = "The Order was created successfully!";
                     await _deliveryService.CreateOrUpdateDeliveryWithOrder(order);
                     RedirectToAction("Index", "Orders");
                 }
                 return View(orderView);
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                TempData[TempDataValues.Error] = $"There was an error when creating the order! Error: {ex.Message}";
                 RedirectToAction("Index", "Orders");
                 return View();
             }
@@ -82,12 +85,18 @@ namespace DeliveryCompany.Controllers
         [HttpPost]
         public async Task DeleteAsync(int id)
         {
-            var isDeleted = await _ordersService.DeleteAsync(id);
-            if (!isDeleted)
+            try
             {
+                var isDeleted = await _ordersService.DeleteAsync(id);
+                TempData[TempDataValues.Success] = "The Order was deleted successfully!";
                 RedirectToAction("Index", "Orders");
             }
-            RedirectToAction("Index", "Orders");
+            catch (Exception ex)
+            {
+
+                TempData[TempDataValues.Error] = $"There was an error when deleting the order ! Error: {ex.Message}";
+                RedirectToAction("Index", "Orders");
+            }
         }
     }
 }

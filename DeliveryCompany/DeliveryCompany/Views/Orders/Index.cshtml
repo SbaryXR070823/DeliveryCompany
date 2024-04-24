@@ -91,7 +91,7 @@
                         </td>
                         <td>
                             <div class="w-75" role="group">
-                                @if (obj.Status == DeliveryCompany.Utility.Enums.OrderStatus.Unassigned)
+                                @if (obj.Status == DeliveryCompany.Utility.Enums.OrderStatus.Unassigned || obj.Status == DeliveryCompany.Utility.Enums.OrderStatus.Processing)
                                 {
                                     <a href="#" class="btn btn-danger mx-1 delete-btn" data-id="@obj.Id">
                                         <i class="bi bi-trash-fill">Cancel Order</i>

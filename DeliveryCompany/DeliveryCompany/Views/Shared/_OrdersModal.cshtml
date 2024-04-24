@@ -1,6 +1,6 @@
 ﻿@using Models.ViewModels
 @model OrderVM
-
+<partial name="_Notification" />
 <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -138,9 +138,8 @@
                 url: '@Url.Action("Create", "Orders")',
                 data: formData,
                 success: function (response) {
-                    console.log('Order created successfully');
-                    window.location.reload();
                     $('#confirmationModal').modal('hide');
+                    window.location.reload();
                 },
                 error: function (xhr, status, error) {
                     console.error('Error creating order:', error);

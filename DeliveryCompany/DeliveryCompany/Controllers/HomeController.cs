@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using DeliveryCompany.Models.DbModels;
+using static DeliveryCompany.Constants.Misc.MiscConstants;
 
 namespace DeliveryCompany.Controllers
 {
@@ -36,19 +37,48 @@ namespace DeliveryCompany.Controllers
 
 		public async Task UpdateHomeDescription([FromBody] PageDescriptions pageDescriptions)
 		{
-			await _pageDescriptionService.UpdatePageDescription(pageDescriptions);
-		}
+            try
+            {
+                await _pageDescriptionService.UpdatePageDescription(pageDescriptions);
+                TempData[TempDataValues.Success] = "The Home page description was updated successfully!";
+                RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                TempData[TempDataValues.Error] = $"There was an error when updating the Home page description! Error: {ex.Message}";
+                RedirectToAction("Index");
+                throw;
+            }
+        }
 
 		[HttpPost]
 		public async Task AddNewCity([FromBody] string name)
 		{
-			await _cityService.AddNewCity(name);
-		}
+            try
+            {
+                TempData[TempDataValues.Success] = "The City was added successfully!";
+                await _cityService.AddNewCity(name);
+            }
+            catch (Exception ex)
+            {
+                TempData[TempDataValues.Error] = $"There was an error when adding the City! Error: {ex.Message}";
+                throw;
+            }
+        }
 
 		public async Task DeleteCity(int id)
 		{
-			await _cityService.DeleteCity(id);
-		}
+            try
+            {
+                TempData[TempDataValues.Success] = "The City was deleted successfully!";
+                await _cityService.DeleteCity(id);
+            }
+            catch (Exception ex)
+            {
+                TempData[TempDataValues.Error] = $"There was an error when deleting the City! Error: {ex.Message}";
+                throw;
+            }
+        }
 
 		public IActionResult Privacy()
         {

@@ -46,7 +46,7 @@ namespace DeliveryCompany.Services.Services
 
         }
 
-        public async Task CreateOrUpdateDeliveryWithOrder(Order order)
+        public async Task<bool> CreateOrUpdateDeliveryWithOrder(Order order)
         {
             var deliveryCars = _repositoryWrapper.DeliveryCarsRepository.FindByCondition(dc => (dc.CityId.Equals(order.CityId) && dc.DeliveryCarStatus.Equals(DeliveryCarStatus.Free) && dc.AssigmentStatus.Equals(AssigmentStatus.Assigned))).ToList();
             var package = await _ordersService.GetPackagesByPackageIdIdAsync(order.PackagesId);
@@ -78,8 +78,8 @@ namespace DeliveryCompany.Services.Services
 
                         _repositoryWrapper.DeliveryRepository.Create(delivery);
                         _repositoryWrapper.Save();
-                        await _ordersService.UpdateStatusOfOrder(order.OrderId, OrderStatus.Processing);
                         isOrderCreated = true;
+                        return true;
                     }
                     else
                     {
@@ -122,16 +122,16 @@ namespace DeliveryCompany.Services.Services
                                 OrderId = order.OrderId,
                                 DeliveryId = deliveryOrder.DeliveryId,
                             };
-
                             _repositoryWrapper.DeliveryRepository.Create(delivery);
                             _repositoryWrapper.Save();
-                            await _ordersService.UpdateStatusOfOrder(order.OrderId, OrderStatus.Processing);
                             isOrderCreated = true;
+                            return true;
                         }
                     }
                 }
 
             }
+            return false;
 
         }
     }

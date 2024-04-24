@@ -6,7 +6,7 @@
 @{
 	ViewData["Title"] = "Home Page";
 }
-
+<partial name="_Notification" />
 <div class="container">
 	<div id="loading-indicator" style="display:none">
 		@await Html.PartialAsync("_Loading");
@@ -120,17 +120,9 @@
 			})
 				.then(response => {
 					if (response.ok) {
-
-						console.log('addNewCity called successfully.');
-					} else {
-
-						console.error('Failed to call addNewCity.');
-					}
+						location.reload();
+					} 
 				})
-				.catch(error => {
-
-					console.error('Error fetching data:', error);
-				});
 		});
 	</script>
 	<script>
@@ -139,7 +131,6 @@
 			var addNewCityBtn = $('#newCityFields button');
 
 			if (newCityFields.length === 0) {
-				// Add new city fields
 				var newCityField = `
 													<div class="new-city-fields">
 														<div class="form-group mt-2">
@@ -153,7 +144,6 @@
 				$('#newCityFields').append(newCityField);
 				addNewCityBtn.text('Cancel');
 			} else {
-				// Remove new city fields
 				newCityFields.remove();
 				addNewCityBtn.text('Add New City');
 			}

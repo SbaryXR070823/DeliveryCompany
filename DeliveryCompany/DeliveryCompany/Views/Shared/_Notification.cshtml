@@ -1,0 +1,24 @@
+﻿@using static DeliveryCompany.Constants.Misc.MiscConstants
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script type="text/javascript">
+    toastr.options.closeButton = true;
+    toastr.options.progressBar = true;
+    toastr.options.showDuration = 3000;
+</script>
+
+@if (TempData[TempDataValues.Success] != null)
+{
+    <script type="text/javascript">
+        toastr.success('@TempData[TempDataValues.Success]')
+    </script>
+    TempData[TempDataValues.Success] = null;
+}
+else if (TempData[TempDataValues.Error] != null)
+{
+    <script type="text/javascript">
+        toastr.error('@TempData[TempDataValues.Error]')
+    </script>
+    TempData[TempDataValues.Error] = null;
+}
