@@ -24,7 +24,8 @@ namespace DeliveryCompany.Models.ViewModels
         [Range(180, 300, ErrorMessage = "Length must be between 180 and 300 cm.")]
         public int MaxLength { get; set; }
 
-        public int? EmployeeId { get; set; }
+		[Required(ErrorMessage = "Employee is required!")]
+		public int? EmployeeId { get; set; }
 
         public int? DeliveryCarsId { get; set; }
  
