@@ -1,72 +1,236 @@
 ﻿@using DeliveryCompany.Models.ViewModels
 @using DeliveryCompany.Services.IServices
+@using DeliveryCompany.Utility.Enums
 @using Services.IServices
 @{
-	ViewData["Title"] = "Orders Page";
+    ViewData["Title"] = "Orders Page";
 }
 @model List<DeliveryOrdersVM>
 @inject IOrdersService _orderService;
 <div class="container">
-	<div class="row pt-4 pb-3">
-		<div class="col-6">
-			<div class="row">
-				<h2 class="text-primary">
-					Deliveries List
-				</h2>
-			</div>
-		</div>
-	</div>
-	@if (Model.Count != 0)
-	{
-		<table class="table table-bordered table-striped">
-			<thead>
-				<tr>
-					<th>
-						Delivery Id
-					</th>
-					<th>
-						Delivery Status
-					</th>
-					<th>
-						Date Time
-					</th>
-					<th>
-						Order Id
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach (var obj in Model.OrderBy(
-						m => m.DeliveryCarOrder.DateTime))
-				{
-					<tr class="clickable">
-						<td>
-							@obj.DeliveryCarOrder.DeliveryId
-						</td>
-						<td>
-							@obj.DeliveryCarOrder.DeliveryStatus.ToString()
-						</td>
-						<td>
-							@obj.DeliveryCarOrder.DateTime
-						</td>
-						<td>
-							@obj.DeliveryCarOrder.OrderId
-						</td>
-					</tr>
-				}
-			</tbody>
+    <div id="loading-indicator" style="display:none">
+        @await Html.PartialAsync("_Loading");
+    </div>
+    <div class="row pt-4 pb-3">
+        <div class="col-6">
+            <div class="row">
+                <h2 class="text-primary">
+                    Deliveries List
+                </h2>
+            </div>
+        </div>
+    </div>
+    @if (Model.Count != 0)
+    {
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr class="clickable">
+                    <th>
+                        Delivery Id
+                    </th>
+                    <th>
+                        Delivery Status
+                    </th>
+                    <th>
+                        Date Time
+                    </th>
+                    <th>
+                        Order Id
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in Model.OrderByDescending(
+               m => m.DeliveryCarOrder.DateTime))
+                {
+                    <tr class="clickable">
+                        <td>
+                            @obj.DeliveryCarOrder.DeliveryId
+                        </td>
+                        <td>
+                            @obj.DeliveryCarOrder.DeliveryStatus.ToString()
+                        </td>
+                        <td>
+                            @obj.DeliveryCarOrder.DateTime
+                        </td>
+                        <td>
+                            @obj.DeliveryCarOrder.OrderId
+                        </td>
+                    </tr>
+                    <tr class="subgrid collapse">
+                        <td colspan="3">
+                            <div class="container">
+                                <div class="row pt-4 pb-3">
+                                    <div class="col-6">
+                                        <h2 class="text-primary">
+                                            Orders
+                                        </h2>
+                                    </div>
+                                </div>
+                                @if (Model.Count > 0)
+                                {
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Order Id
+                                                </th>
+                                                <th>
+                                                    Price
+                                                </th>
+                                                <th>
+                                                    Status
+                                                </th>
+                                                <th>
+                                                    Date Time
+                                                </th>
+                                                <th>
+                                                    UserId
+                                                </th>
+                                                <th>
+                                                    PacakgeId
+                                                </th>
+                                                <th>
+                                                    Address
+                                                </th>
+                                                <th>
+                                                    CityId
+                                                </th>
+                                                <th>
 
-		</table>
-	}
-	else
-	{
-		<p>No Data to display!</p>
-	}
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var order in obj.OrderList.OrderByDescending(o => o.DateTime))
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @order.OrderId
+                                                    </td>
+                                                    <td>
+                                                        @order.Price
+                                                    </td>
+                                                    <td>
+                                                        @order.OrderStatus.ToString()
+                                                    </td>
+                                                    <td>
+                                                        @order.DateTime
+                                                    </td>
+                                                    <td>
+                                                        @order.UserId
+                                                    </td>
+                                                    <td>
+                                                        @order.PackagesId
+                                                    </td>
+                                                    <td>
+                                                        @order.Address
+                                                    </td>
+                                                    <td>
+                                                        @order.CityId
+                                                    </td>
+                                                    <td>
+                                                        @if (order.OrderStatus == OrderStatus.InTransit)
+                                                        {
+                                                            <i class="bi bi-truck text-success delivery-icon" data-id="@order.OrderId" data-status="@OrderStatus.Delivered" style="cursor: pointer; font-size: 2em;"></i>
+                                                        }
+                                                        else if (order.OrderStatus == OrderStatus.Delivered)
+                                                        {
+                                                            <i class="bi bi-box-seam-fill text-warning" style="font-size: 2em;"></i>
+                                                        }
+                                                        else if (order.OrderStatus == OrderStatus.Processing)
+                                                        {
+                                                            <i class="bi bi-cpu text-info" style="font-size: 2em;"></i>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                }
+                                else
+                                {
+                                    <div class="text-start">
+                                        <p>No data to display</p>
+                                    </div>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    }
+    else
+    {
+        <p>No Data to display!</p>
+    }
+</div>
+<div class="modal fade" id="confirmationModalPopup" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel">Confirm Action</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure this item is Delivered?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success" id="confirmDelivered">Mark as Delivered</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 
 @section Scripts {
-	@{
-		<partial name="_ValidationScriptsPartial" />
-	}
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+
+    <script>
+        $(document).ready(function () {
+            $('table').on('click', 'tr.clickable', function () {
+                $(this).next('tr.subgrid').toggle();
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            function showLoadingIndicator() {
+                $('#loading-indicator').show();
+            }
+
+            function hideLoadingIndicator() {
+                $('#loading-indicator').hide();
+            }
+
+            $('.delivery-icon').click(function () {
+                var orderId = $(this).data('id');
+                var orderstatus = $(this).data('status');
+                $('#confirmationModalPopup').modal('show');
+                $('#confirmDelivered').off('click').on('click', function () {
+                    showLoadingIndicator();
+                    $('#confirmationModalPopup').modal('hide');
+                    $.ajax({
+                        url: '@Url.Action("UpdateOrderStatus", "Deliveries")',
+                        type: 'POST',
+                        data: {
+                            id: orderId,
+                            status: orderstatus
+                        },
+                        success: function () {
+                            location.reload();
+                        },
+                        error: function () {
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 }

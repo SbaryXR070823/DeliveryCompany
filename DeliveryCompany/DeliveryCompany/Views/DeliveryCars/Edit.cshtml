@@ -9,7 +9,7 @@
         <h2 class="text-center text-primary">Create DeliveryCar</h2>
         <form asp-action="Edit" method="post">
             <div asp-validation-summary="ModelOnly"></div>
-            <input type="hidden" name="Employees" value="@Html.Raw(Json.Serialize(Model.Employees))" />
+            @* <input type="hidden" name="Employees" value="@Html.Raw(Json.Serialize(Model.Employees))" /> *@
             <input type="hidden" name="DeliveryCarsId" value="@Model.DeliveryCarsId" />
             <div class="mb-1">
                 <label asp-for="CityId" class="control-label"></label>

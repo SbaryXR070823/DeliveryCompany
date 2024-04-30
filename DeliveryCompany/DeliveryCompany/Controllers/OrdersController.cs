@@ -69,7 +69,11 @@ namespace DeliveryCompany.Controllers
 
                     var order = await _ordersService.CreateOrderAsync(package, userOrderInformations);
                     TempData[TempDataValues.Success] = "The Order was created successfully!";
-                    await _deliveryService.CreateOrUpdateDeliveryWithOrder(order);
+                    var isDeliveryCreated = await _deliveryService.CreateOrUpdateDeliveryWithOrder(order);
+                    if (isDeliveryCreated)
+                    {
+                        await _ordersService.UpdateStatusOfOrder(order.OrderId, OrderStatus.Processing);
+                    }
                     RedirectToAction("Index", "Orders");
                 }
                 return View(orderView);

@@ -1,9 +1,12 @@
-﻿using DeliveryCompany.Models.ViewModels;
+﻿using Constants.Authentification;
+using DeliveryCompany.Models.ViewModels;
 using DeliveryCompany.Services.IServices;
+using DeliveryCompany.Utility.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Models.Authentification;
+using Services.IServices;
 using Utility.Helpers;
 
 namespace DeliveryCompany.Controllers;
@@ -15,12 +18,14 @@ public class DeliveriesController : Controller
 	private readonly UserManager<AppUser> _userManager;
 	private readonly IEmployeeService _employeeService;
 	private readonly IDeliveryCarsService _deliveryCarsService;
-	public DeliveriesController(IDeliveryService deliveryService, UserManager<AppUser> userManager, IEmployeeService employeeService, IDeliveryCarsService deliveryCarsService)
+	private readonly IOrdersService _ordersService;
+	public DeliveriesController(IDeliveryService deliveryService, UserManager<AppUser> userManager, IEmployeeService employeeService, IDeliveryCarsService deliveryCarsService, IOrdersService ordersService)
 	{
 		_deliveryService = deliveryService;
 		_userManager = userManager;
 		_employeeService = employeeService;
 		_deliveryCarsService = deliveryCarsService;
+		_ordersService = ordersService;
 	}
 	[Authorize]
 
@@ -35,5 +40,12 @@ public class DeliveriesController : Controller
 		}
 		var deliveries = await _deliveryService.GetOrdersByCarId(deliveryCar.DeliveryCarsId);
         return View(deliveries);
+    }
+
+    [HttpPost]
+    public async Task UpdateOrderStatusAsync(int id, OrderStatus status)
+    {
+		await _ordersService.UpdateStatusOfOrder(id, status);
+        RedirectToAction("Index");
     }
 }
