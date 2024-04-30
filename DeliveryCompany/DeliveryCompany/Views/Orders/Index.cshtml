@@ -64,7 +64,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var obj in Model.OrderBy(
+                @foreach (var obj in Model.OrderByDescending(
                category => category.DateTime))
                 {
                     <tr class="clickable">
