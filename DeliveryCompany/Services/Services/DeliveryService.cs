@@ -34,12 +34,18 @@ namespace DeliveryCompany.Services.Services
                 .ToList(); 
             foreach (var deliveryOrder in delivery)
             {
-                var orders = _repositoryWrapper.OrderRepository.FindByCondition(o => o.OrderId.Equals(deliveryOrder.OrderId)).ToList();
+                var deliveries = _repositoryWrapper.DeliveryRepository.FindByCondition(d => d.DeliveryCarId.Equals(deliveryOrder.DeliveryCarId)).ToList();
+                var OrderList = new List<Order>();
+                foreach(var deliveryToAdd in deliveries)
+                {
+                    var order = _repositoryWrapper.OrderRepository.FindByCondition(o => o.OrderId.Equals(deliveryToAdd.OrderId)).FirstOrDefault();
+                    OrderList.Add(order);
+                }
                 DeliveryOrdersVM deliveryOrderVMs = new DeliveryOrdersVM
                 {
                     DeliveryCarOrder = deliveryOrder,
-                    OrderList = orders
-                };
+                    OrderList = OrderList
+				};
                 deliveryOrdersVMs.Add(deliveryOrderVMs);
             }
             return deliveryOrdersVMs;
