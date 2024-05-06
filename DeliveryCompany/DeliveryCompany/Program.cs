@@ -26,6 +26,7 @@ builder.Services.AddDbContext<AppIdentityDbAccess>(
 builder.Services.AddDbContext<DataAppDbContext>(
     options => options.UseSqlServer(connectionStringData));
 
+//Repos
 builder.Services.AddTransient<ICityRepository, CityRepository>();
 builder.Services.AddTransient<IRepositoryWrapper, RepositoryWrapper>();
 builder.Services.AddTransient<IPageDescriptionRepository, PageDescriptionRepository>();
@@ -33,6 +34,7 @@ builder.Services.AddTransient<IOrderRepository, OrderRepository>();
 builder.Services.AddTransient<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddTransient<IDeliveryRepository, DeliveryRepository>();
 
+//Services
 builder.Services.AddTransient<IPageDescriptionService, PageDescriptionService>();
 builder.Services.AddTransient<ICityService, CityService>();
 builder.Services.AddTransient<IOrdersService, OrdersService>();
@@ -40,6 +42,7 @@ builder.Services.AddTransient<IEmployeeService, EmployeeService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IDeliveryCarsService, DeliveryCarService>();
 builder.Services.AddTransient<IDeliveryService, DeliveryService>();
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 builder.Services.AddIdentity<AppUser, IdentityRole>(
     options =>
