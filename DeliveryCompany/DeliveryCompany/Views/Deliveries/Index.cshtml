@@ -29,14 +29,12 @@
                         Delivery Id
                     </th>
                     <th>
-                        Delivery Status
-                    </th>
-                    <th>
                         Date Time
                     </th>
                     <th>
-                        Order Id
+                        Delivery Status
                     </th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -47,14 +45,22 @@
                         <td>
                             @obj.DeliveryCarOrder.DeliveryId
                         </td>
-                        <td>
-                            @obj.DeliveryCarOrder.DeliveryStatus.ToString()
-                        </td>
+
                         <td>
                             @obj.DeliveryCarOrder.DateTime
                         </td>
+                        <td class="text-center align-middle">
+                            @if (obj.DeliveryCarOrder.DeliveryStatus == DeliveryStatusEnum.Pending)
+                            {
+                                <i class="bi bi-box-arrow-in-right start-day-icon" style="cursor: pointer; font-size: 2em;" data-id="@obj.DeliveryCarOrder.DeliveryId" data-status="@DeliveryStatusEnum.InTransit"></i>
+                            }
+                            else if (obj.DeliveryCarOrder.DeliveryStatus == DeliveryStatusEnum.InTransit)
+                            {
+                                <i class="bi bi-box-arrow-in-left end-day-icon" style="cursor: pointer; font-size: 2em;" data-id="@obj.DeliveryCarOrder.DeliveryId" data-status="@DeliveryStatusEnum.Finished"></i>
+                            }
+                        </td>
                         <td>
-                            @obj.DeliveryCarOrder.OrderId
+                            <i class="bi bi-chevron-expand" style="cursor: pointer; font-size: 2em;"></i>
                         </td>
                     </tr>
                     <tr class="subgrid collapse">
@@ -185,6 +191,42 @@
     </div>
 </div>
 
+<div class="modal fade" id="confirmationModalPopupStart" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel">Confirm Action</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to start your delivering day @User.Identity.Name?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success" id="confirmStart">Start</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirmationModalPopupEnd" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel">Confirm Action</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to end your delivering day @User.Identity.Name?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmEnd">End</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @section Scripts {
     @{
@@ -193,8 +235,9 @@
 
     <script>
         $(document).ready(function () {
-            $('table').on('click', 'tr.clickable', function () {
-                $(this).next('tr.subgrid').toggle();
+            $('.bi-chevron-expand').click(function () {
+                var $subgrid = $(this).closest('tr').next('.subgrid');
+                $subgrid.toggleClass('collapse');
             });
         });
     </script>
@@ -231,6 +274,53 @@
                     });
                 });
             });
+
+            $('.start-day-icon').click(function () {
+                var deliveryId = $(this).data('id');
+                var deliverystatus = $(this).data('status');
+                $('#confirmationModalPopupStart').modal('show');
+                $('#confirmStart').off('click').on('click', function () {
+                    showLoadingIndicator();
+                    $('#confirmationModalPopup').modal('hide');
+                    $.ajax({
+                        url: '@Url.Action("UpdateDeliveryStatus", "Deliveries")',
+                        type: 'POST',
+                        data: {
+                            id: deliveryId,
+                            status: deliverystatus
+                        },
+                        success: function () {
+                            location.reload();
+                        },
+                        error: function () {
+                        }
+                    });
+                });
+            });
+
+            $('.end-day-icon').click(function () {
+                var deliveryId = $(this).data('id');
+                var deliverystatus = $(this).data('status');
+                $('#confirmationModalPopupEnd').modal('show');
+                $('#confirmEnd').off('click').on('click', function () {
+                    showLoadingIndicator();
+                    $('#confirmationModalPopup').modal('hide');
+                    $.ajax({
+                        url: '@Url.Action("UpdateDeliveryStatus", "Deliveries")',
+                        type: 'POST',
+                        data: {
+                            id: deliveryId,
+                            status: deliverystatus
+                        },
+                        success: function () {
+                            location.reload();
+                        },
+                        error: function () {
+                        }
+                    });
+                });
+            });
+
         });
     </script>
 }

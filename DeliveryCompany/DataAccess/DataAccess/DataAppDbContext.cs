@@ -35,24 +35,13 @@ namespace DeliveryCompany.DataAccess.Data
           );
 
             modelBuilder.Entity<DeliveryCarOrder>().HasKey(
-                dco => new { dco.DeliveryCarId, dco.OrderId });
+                 dco => new { dco.PrimaryId });
 
             modelBuilder.Entity<Order>()
                .HasOne(o => o.Packages)
                .WithOne(p => p.Order)
                .HasForeignKey<Order>(o => o.PackagesId)
                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<DeliveryCarOrder>()
-                .HasOne(dc => dc.DeliveryCars)
-                .WithMany()
-                .HasForeignKey(dc => dc.DeliveryCarId);
-
-            modelBuilder.Entity<DeliveryCarOrder>()
-                .HasOne(dc => dc.Order)
-                .WithMany()
-                .HasForeignKey(dc => dc.OrderId);
-
 
             modelBuilder.Entity<DeliveryCars>()
                .HasKey(dc => dc.DeliveryCarsId);

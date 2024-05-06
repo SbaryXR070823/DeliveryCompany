@@ -24,10 +24,9 @@ namespace DeliveryCompany.Models.DbModels
 
         public DateTime DateTime { get; set; }
 
-        [Column(Order = 1)]
         public int DeliveryId { get; set; }
 
-        public DeliveryCars DeliveryCars { get; set; }
-        public Order Order { get; set; }
+        [Column(Order = 1)]
+        public int PrimaryId { get; set; }
     }
 }

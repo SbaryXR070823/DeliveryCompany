@@ -1,5 +1,6 @@
 ﻿using DeliveryCompany.Models.DbModels;
 using DeliveryCompany.Models.ViewModels;
+using DeliveryCompany.Utility.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,6 @@ namespace DeliveryCompany.Services.IServices
 	{
 		Task<List<DeliveryOrdersVM>> GetOrdersByCarId(int carId);
 		Task<bool> CreateOrUpdateDeliveryWithOrder(Order order);
-
+        Task UpdateDeliveries(int deliveriesId, DeliveryStatusEnum deliveryStatus);
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utility.Models;
 
 namespace Utility.Helpers
 {
@@ -17,6 +18,14 @@ namespace Utility.Helpers
             double totalPrice = basePrice + weightPrice + volumePrice;
 
             return totalPrice;
+        }
+
+        public static bool CheckPackage(PackageCheck package)
+        {
+            return package.MaxHeight > package.Height &&
+                        package.MaxWeight > package.Weight &&
+                        package.MaxWidth > package.Width &&
+                        package.MaxLength > package.Length;
         }
     }
 }
