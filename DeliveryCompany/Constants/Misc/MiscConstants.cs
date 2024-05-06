@@ -13,5 +13,10 @@ namespace DeliveryCompany.Constants.Misc
             public const string Success = "success";
             public const string Error = "error";
         }
+
+        public static class Contact
+        {
+            public const string Subject = "User Request";
+        }
     }
 }
