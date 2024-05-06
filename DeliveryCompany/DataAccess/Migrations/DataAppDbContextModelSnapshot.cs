@@ -42,27 +42,31 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DeliveryCompany.Models.DbModels.DeliveryCarOrder", b =>
                 {
+                    b.Property<int>("PrimaryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PrimaryId"));
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("DeliveryCarId")
                         .HasColumnType("int")
                         .HasColumnOrder(2);
+
+                    b.Property<int>("DeliveryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DeliveryStatus")
+                        .HasColumnType("int");
 
                     b.Property<int>("OrderId")
                         .HasColumnType("int")
                         .HasColumnOrder(3);
 
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("DeliveryId")
-                        .HasColumnType("int")
-                        .HasColumnOrder(1);
-
-                    b.Property<int>("DeliveryStatus")
-                        .HasColumnType("int");
-
-                    b.HasKey("DeliveryCarId", "OrderId");
-
-                    b.HasIndex("OrderId");
+                    b.HasKey("PrimaryId");
 
                     b.ToTable("DeliveryCarOrders");
                 });
@@ -228,25 +232,6 @@ namespace DataAccess.Migrations
                             PageDescriptionsId = 1,
                             Description = "initial description"
                         });
-                });
-
-            modelBuilder.Entity("DeliveryCompany.Models.DbModels.DeliveryCarOrder", b =>
-                {
-                    b.HasOne("DeliveryCompany.Models.DbModels.DeliveryCars", "DeliveryCars")
-                        .WithMany()
-                        .HasForeignKey("DeliveryCarId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DeliveryCompany.Models.DbModels.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DeliveryCars");
-
-                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("DeliveryCompany.Models.DbModels.DeliveryCars", b =>
