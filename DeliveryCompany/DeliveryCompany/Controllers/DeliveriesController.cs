@@ -32,13 +32,28 @@ public class DeliveriesController : Controller
 
     public async Task<IActionResult> IndexAsync()
     {
-        var employee = _employeeService.GetEmployeeByUserId(User.GetUserId());
-        var deliveryCar = _deliveryCarsService.GetDeliveryCarByEmployeeId(employee.EmployeeId);
-        if (deliveryCar is null)
+        var isAdmin = User.IsInRole(UserRoles.Admin);
+        var userId = User.GetUserId();
+        var deliveries = new List<DeliveryOrdersVM>();
+        if (!isAdmin)
         {
-            return View(new List<DeliveryOrdersVM>());
+            var employee = _employeeService.GetEmployeeByUserId(userId);
+            var deliveryCar = _deliveryCarsService.GetDeliveryCarByEmployeeId(employee.EmployeeId);
+            if (deliveryCar is null)
+            {
+                return View(new List<DeliveryOrdersVM>());
+            }
+            deliveries = await _deliveryService.GetOrdersByCarId(deliveryCar.DeliveryCarsId, isAdmin);
         }
-        var deliveries = await _deliveryService.GetOrdersByCarId(deliveryCar.DeliveryCarsId);
+        else
+        {
+            deliveries = await _deliveryService.GetOrdersByCarId(0, isAdmin);
+            if(deliveries.Count < 1)
+            {
+                return View(new List<DeliveryOrdersVM>());
+            } 
+        }
+       
         return View(deliveries);
     }
 

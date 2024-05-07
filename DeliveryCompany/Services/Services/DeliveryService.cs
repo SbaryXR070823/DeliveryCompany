@@ -28,12 +28,21 @@ namespace DeliveryCompany.Services.Services
             _ordersService = ordersService;
         }
 
-        public async Task<List<DeliveryOrdersVM>> GetOrdersByCarId(int carId)
+        public async Task<List<DeliveryOrdersVM>> GetOrdersByCarId(int carId, bool isAdmin)
         {
             List<DeliveryOrdersVM> deliveryOrdersVMs = new List<DeliveryOrdersVM>();
-            var delivery = _repositoryWrapper.DeliveryRepository.FindByCondition(d => d.DeliveryCarId.Equals(carId)).ToList().GroupBy(d => d.DeliveryId)
-                .Select(group => group.OrderBy(o => o.DateTime).First())
-                .ToList();
+            var delivery = new List<DeliveryCarOrder>();
+            if (!isAdmin)
+            {
+                delivery = _repositoryWrapper.DeliveryRepository.FindByCondition(d => d.DeliveryCarId.Equals(carId)).ToList().GroupBy(d => d.DeliveryId)
+                    .Select(group => group.OrderBy(o => o.DateTime).First())
+                    .ToList();
+            } else
+            {
+                delivery = _repositoryWrapper.DeliveryRepository.FindAll().ToList().GroupBy(d => d.DeliveryId)
+                   .Select(group => group.OrderBy(o => o.DateTime).First())
+                   .ToList();
+            }
             foreach (var deliveryOrder in delivery)
             {
                 var deliveries = _repositoryWrapper.DeliveryRepository.FindByCondition(d => d.DeliveryCarId.Equals(deliveryOrder.DeliveryCarId) && d.DeliveryId.Equals(deliveryOrder.DeliveryId)).ToList();
@@ -237,18 +246,18 @@ namespace DeliveryCompany.Services.Services
 
         private void CreateNewDelivery(DeliveryCars deliveryCar, Order order)
         {
-                var lastDelivery = _repositoryWrapper.DeliveryRepository.FindAll().OrderByDescending(x => x.DeliveryId).ToList();
-                DeliveryCarOrder delivery = new DeliveryCarOrder()
-                {
-                    DeliveryCarId = deliveryCar.DeliveryCarsId,
-                    DateTime = DateTime.Now,
-                    DeliveryStatus = DeliveryStatusEnum.Pending,
-                    OrderId = order.OrderId,
-                    DeliveryId = lastDelivery.FirstOrDefault() is null ? 1 : (lastDelivery.FirstOrDefault().DeliveryId + 1),
-                };
+            var lastDelivery = _repositoryWrapper.DeliveryRepository.FindAll().OrderByDescending(x => x.DeliveryId).ToList();
+            DeliveryCarOrder delivery = new DeliveryCarOrder()
+            {
+                DeliveryCarId = deliveryCar.DeliveryCarsId,
+                DateTime = DateTime.Now,
+                DeliveryStatus = DeliveryStatusEnum.Pending,
+                OrderId = order.OrderId,
+                DeliveryId = lastDelivery.FirstOrDefault() is null ? 1 : (lastDelivery.FirstOrDefault().DeliveryId + 1),
+            };
 
-                _repositoryWrapper.DeliveryRepository.Create(delivery);
-                _repositoryWrapper.Save();
+            _repositoryWrapper.DeliveryRepository.Create(delivery);
+            _repositoryWrapper.Save();
         }
     }
 }
