@@ -11,7 +11,7 @@ namespace DeliveryCompany.Services.IServices
 {
 	public interface IDeliveryService
 	{
-		Task<List<DeliveryOrdersVM>> GetOrdersByCarId(int carId);
+		Task<List<DeliveryOrdersVM>> GetOrdersByCarId(int carId, bool isAdmin);
 		Task<bool> CreateOrUpdateDeliveryWithOrder(Order order);
         Task UpdateDeliveries(int deliveriesId, DeliveryStatusEnum deliveryStatus);
     }
