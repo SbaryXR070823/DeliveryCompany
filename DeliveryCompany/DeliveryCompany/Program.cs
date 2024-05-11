@@ -5,9 +5,13 @@ using DeliveryCompany.Services.IServices;
 using DeliveryCompany.Services.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Models.Authentification;
 using Repository.IRepository;
 using Repository.Repository;
+using Serilog;
+using Serilog.Filters;
+using Serilog.Sinks.MSSqlServer;
 using Services.IServices;
 using Services.Services;
 using System;
@@ -19,6 +23,16 @@ builder.Services.AddControllersWithViews();
 
 var connectionStringIdentity = builder.Configuration.GetConnectionString("DefaultConnectionIndentity");
 var connectionStringData = builder.Configuration.GetConnectionString("DefaultConnectionData");
+
+
+Log.Logger = new LoggerConfiguration()
+   .MinimumLevel.Information()
+   .WriteTo.Console()
+   .WriteTo.File("Logs/DeliveryCompanyLogs.txt", rollingInterval: RollingInterval.Day)
+   .CreateLogger();
+
+
+builder.Host.UseSerilog();
 
 builder.Services.AddDbContext<AppIdentityDbAccess>(
     options => options.UseSqlServer(connectionStringIdentity));
@@ -61,6 +75,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(
 
 var app = builder.Build();
 
+app.Lifetime.ApplicationStopped.Register(() => Log.CloseAndFlush());
 // Creating the roles if they do not exists
 
 using (var scope = app.Services.CreateScope())

@@ -1,4 +1,5 @@
 ﻿using DeliveryCompany.Services.IServices;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace DeliveryCompany.Services.Services
     {
         public Task SendEmailAsync(string email, string subject, string message)
         {
+            Log.Information("Sending new e-mail from email, Message:{0}...", message);
             var mail = "ionutalexandrusbaroi@gmail.com";
             var password = "ybtiybynqxhcxhfp";
             var client = new SmtpClient("smtp.gmail.com", 587)
