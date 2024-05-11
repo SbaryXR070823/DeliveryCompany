@@ -3,6 +3,7 @@ using Models.Authentification;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Models.ViewModels;
+using Serilog;
 
 namespace DeliveryCompany.Controllers;
 public class AccountController : Controller
@@ -29,6 +30,7 @@ public class AccountController : Controller
 
             if (result.Succeeded)
             {
+                Log.Information("User signed in succesfully, {0}", loginModel.Username);
                 return RedirectToAction("Index", "Home");
             }
             ModelState.AddModelError("", "Invalid login attempt");
@@ -60,6 +62,7 @@ public class AccountController : Controller
 
             if (result.Succeeded && roleAssigmentResult.Succeeded)
             {
+                Log.Information("User {0} created succesfully, for role {1}", appUser.UserName, UserRoles.User);
                 await _signInManager.SignInAsync(appUser, false);
                 return RedirectToAction("Index", "Home");
             }
@@ -87,6 +90,7 @@ public class AccountController : Controller
     public async Task<IActionResult> LogOut()
     {
         await _signInManager.SignOutAsync();
+        Log.Information("User {0} signed out succesfully", User.Identity.Name);
         return RedirectToAction("Index", "Home");
     }
 }

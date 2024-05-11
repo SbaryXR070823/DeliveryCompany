@@ -3,6 +3,7 @@ using DeliveryCompany.Services.IServices;
 using DeliveryCompany.Models.DbModels;
 using Microsoft.EntityFrameworkCore;
 using Repository.IRepository;
+using Serilog;
 
 namespace DeliveryCompany.Services.Services
 {
@@ -24,6 +25,7 @@ namespace DeliveryCompany.Services.Services
 		{
 			City city = new City { Name = name };
 			_repositoryWrapper.CityRepository.Create(city);
+			Log.Information("New city {0} added!...", city.Name);
 			_repositoryWrapper.Save();
 		}
 
@@ -31,7 +33,8 @@ namespace DeliveryCompany.Services.Services
 		{
 			var city = _repositoryWrapper.CityRepository.FindByCondition(x => x.CityId == id).FirstOrDefault();
 			_repositoryWrapper.CityRepository.Delete(city);
-			_repositoryWrapper.Save();
+            Log.Information("City {0} deleted!...", city.Name);
+            _repositoryWrapper.Save();
 		}
 	}
 }

@@ -3,6 +3,7 @@ using Models.Authentification;
 using DeliveryCompany.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Services.IServices;
+using Serilog;
 
 
 namespace Services.Services
@@ -20,6 +21,7 @@ namespace Services.Services
 
 		public async Task<List<UserRoleInfo>> GetAllUsersFromRole(string role)
 		{
+			Log.Information("Retrieving all users for role {0}...",role);
 			var users = await _userManager.GetUsersInRoleAsync(role);
 			List<UserRoleInfo> usersToReturn = new List<UserRoleInfo>();
 			foreach (var user in users)
@@ -43,10 +45,13 @@ namespace Services.Services
                 UserName = userCreation.Email,
                 Address = userCreation.Address,
             };
+			Log.Information("Creating user {@0}...", appUser);
             var result = await _userManager.CreateAsync(appUser, userCreation.Password);
+			Log.Information("Adding {0} to role {1}...",appUser.Email, userCreation.Role);
             var roleAssigmentResult = await _userManager.AddToRoleAsync(appUser, userCreation.Role);
             if (result.Succeeded && roleAssigmentResult.Succeeded)
             {
+				Log.Information("Succesgfully created user {@0} and added it to role {1}...", appUser, userCreation.Role);
 				return true;
             }
 
