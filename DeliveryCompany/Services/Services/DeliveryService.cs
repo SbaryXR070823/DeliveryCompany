@@ -44,7 +44,7 @@ namespace DeliveryCompany.Services.Services
                 delivery = _repositoryWrapper.DeliveryRepository.FindAll().ToList().GroupBy(d => d.DeliveryId)
                    .Select(group => group.OrderBy(o => o.DateTime).First())
                    .ToList();
-                Log.Information("Returning deliveries {@0} for Admin", delivery);
+                Log.Information("Returning deliveries {@0} for Admin...", delivery);
             }
             foreach (var deliveryOrder in delivery)
             {
@@ -62,7 +62,7 @@ namespace DeliveryCompany.Services.Services
                 };
                 deliveryOrdersVMs.Add(deliveryOrderVMs);
             }
-            Log.Information("Returning deliveries...{@0}", deliveryOrdersVMs);
+            Log.Information("Returning deliveries...{@0}...", deliveryOrdersVMs);
             return deliveryOrdersVMs;
         }
 
@@ -81,17 +81,17 @@ namespace DeliveryCompany.Services.Services
 
         private void UpdateInTransitDeliveries(int deliveriesId)
         {
-            Log.Information("Retrieving all the deliveries for Id {1}", deliveriesId);
+            Log.Information("Retrieving all the deliveries for Id {1}...", deliveriesId);
             var delivieries = _repositoryWrapper.DeliveryRepository.FindByCondition(d => d.DeliveryId.Equals(deliveriesId)).ToList();
             Log.Information("{@0}",delivieries);
             foreach (var delivery in delivieries)
             {
                 delivery.DeliveryStatus = DeliveryStatusEnum.InTransit;
-                Log.Information("Retrieving order with Id {1}", delivery.OrderId);
+                Log.Information("Retrieving order with Id {1}...", delivery.OrderId);
                 var order = _repositoryWrapper.OrderRepository.FindByCondition(o => o.OrderId.Equals(delivery.OrderId)).FirstOrDefault();
                 Log.Information("{@0}", order);
                 order.OrderStatus = OrderStatus.InTransit;
-                Log.Information("Updating Order {@0} and Delivery {@1}",order, delivery);
+                Log.Information("Updating Order {@0} and Delivery {@1}...",order, delivery);
                 _repositoryWrapper.OrderRepository.Update(order);
                 _repositoryWrapper.DeliveryRepository.Update(delivery);
             }
@@ -104,9 +104,9 @@ namespace DeliveryCompany.Services.Services
 
         private async Task UpdateFinishedDeliveriesAsync(int deliveriesId)
         {
-            Log.Information("Retrieving all the deliveries for Id {1}", deliveriesId);
+            Log.Information("Retrieving all the deliveries for Id {1}...", deliveriesId);
             var delivieries = _repositoryWrapper.DeliveryRepository.FindByCondition(d => d.DeliveryId.Equals(deliveriesId)).ToList();
-            Log.Information("Finish existing deliveries...{@0}", delivieries);
+            Log.Information("Finish existing deliveries {@0}...", delivieries);
             FinishExistingDeliveries(delivieries);
             UpdateDeliveryCarStatus(delivieries.FirstOrDefault().DeliveryCarId, DeliveryCarStatus.Free);
             foreach (var delivery in delivieries)
@@ -163,7 +163,7 @@ namespace DeliveryCompany.Services.Services
             Log.Information("Updating order {0} status to processing...", orderId);
             order.OrderStatus = OrderStatus.Processing;
             _repositoryWrapper.OrderRepository.Update(order);
-            Log.Information("Creating or updating delivery for the order {0}", orderId);
+            Log.Information("Creating or updating delivery for the order {0}...", orderId);
             await CreateOrUpdateDeliveryWithOrder(order);
             _repositoryWrapper.Save();
         }
@@ -195,7 +195,7 @@ namespace DeliveryCompany.Services.Services
                     };
                     if (OrderHelpers.CheckPackage(packageToCheck))
                     {
-                        Log.Information("Creating new delivery for order {@0} and delivery car {@1}", order, deliveryCar);
+                        Log.Information("Creating new delivery for order {@0} and delivery car {@1}...", order, deliveryCar);
                         CreateNewDelivery(deliveryCar, order);
                         isOrderCreated = true;
                         return true;
@@ -221,7 +221,7 @@ namespace DeliveryCompany.Services.Services
                 {
                     List<KeyValuePair<int, int>> sortedList = deliveryIdToNumberOfOrders.ToList();
                     sortedList.Sort((x, y) => x.Value.CompareTo(y.Value));
-                    Log.Information("Sorting the deliveries so we can balance them... {@1}", sortedList);
+                    Log.Information("Sorting the deliveries so we can balance them {@1}...", sortedList);
                     foreach (var dcv in sortedList)
                     {
                         var deliveryCar = _repositoryWrapper.DeliveryCarsRepository.FindByCondition(dc => dc.DeliveryCarsId.Equals(dcv.Key)).FirstOrDefault();
@@ -238,7 +238,7 @@ namespace DeliveryCompany.Services.Services
                         };
                         if (OrderHelpers.CheckPackage(packageToCheck))
                         {
-                            Log.Information("Creating new delivery for order {@0} and delivery car {@1}", order, deliveryCar);
+                            Log.Information("Creating new delivery for order {@0} and delivery car {@1}...", order, deliveryCar);
                             CreateDeliveryForAlreadyExistingOne(deliveryCar, order);
                             isOrderCreated = true;
                             return true;
@@ -261,7 +261,7 @@ namespace DeliveryCompany.Services.Services
                 OrderId = order.OrderId,
                 DeliveryId = deliveryOrder.DeliveryId,
             };
-            Log.Information("Creating a delivery for an already existing one... {@0}", deliveryOrder);
+            Log.Information("Creating a delivery for an already existing one {@0}...", deliveryOrder);
             _repositoryWrapper.DeliveryRepository.Create(delivery);
             _repositoryWrapper.Save();
         }
@@ -277,7 +277,7 @@ namespace DeliveryCompany.Services.Services
                 OrderId = order.OrderId,
                 DeliveryId = lastDelivery.FirstOrDefault() is null ? 1 : (lastDelivery.FirstOrDefault().DeliveryId + 1),
             };
-            Log.Information("Creating a new delivery... {@0}", delivery);
+            Log.Information("Creating a new delivery {@0}...", delivery);
             _repositoryWrapper.DeliveryRepository.Create(delivery);
             _repositoryWrapper.Save();
         }

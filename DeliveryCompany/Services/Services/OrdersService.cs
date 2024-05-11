@@ -40,7 +40,7 @@ namespace Services.Services
             }
             else
             {
-                Log.Information("Retrieving orders for userId {0}", userId);
+                Log.Information("Retrieving orders for userId {0}...", userId);
                 ordersList = _repositoryWrapper.OrderRepository.FindByCondition(x => x.UserId.Equals(userId)).ToList();
             }
             foreach (var order in ordersList)
@@ -80,7 +80,7 @@ namespace Services.Services
                 Address = userOrderInformations.UserAddress,
                 CityId = userOrderInformations.UserCityId
             };
-            Log.Information("Creating new order with the content {@0}", package);
+            Log.Information("Creating new order with the content {@0}...", package);
             _repositoryWrapper.OrderRepository.Create(order);
             _repositoryWrapper.Save();
             return order;

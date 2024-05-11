@@ -61,7 +61,7 @@ namespace Services.Services
 
         public async Task<List<Employee>> GetAllEmployeesByStatus(AssigmentStatus assigmentStatus)
         {
-            Log.Information("Retrieving all employees by status {@0}", assigmentStatus);
+            Log.Information("Retrieving all employees by status {@0}...", assigmentStatus);
             var employess = _repositoryWrapper.EmployeeRepository.FindByCondition(x => x.AssigmentStatus.Equals(assigmentStatus)).ToList();
             if (employess != null)
             {

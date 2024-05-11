@@ -47,11 +47,11 @@ namespace Services.Services
             };
 			Log.Information("Creating user {@0}...", appUser);
             var result = await _userManager.CreateAsync(appUser, userCreation.Password);
-			Log.Information("Adding {0} to role {1}",appUser.Email, userCreation.Role);
+			Log.Information("Adding {0} to role {1}...",appUser.Email, userCreation.Role);
             var roleAssigmentResult = await _userManager.AddToRoleAsync(appUser, userCreation.Role);
             if (result.Succeeded && roleAssigmentResult.Succeeded)
             {
-				Log.Information("Succesgfully created user {@0} and added it to role {1}", appUser, userCreation.Role);
+				Log.Information("Succesgfully created user {@0} and added it to role {1}...", appUser, userCreation.Role);
 				return true;
             }
 

@@ -25,7 +25,7 @@ namespace DeliveryCompany.Services.Services
 		{
 			City city = new City { Name = name };
 			_repositoryWrapper.CityRepository.Create(city);
-			Log.Information("New city {0} added!", city.Name);
+			Log.Information("New city {0} added!...", city.Name);
 			_repositoryWrapper.Save();
 		}
 
@@ -33,7 +33,7 @@ namespace DeliveryCompany.Services.Services
 		{
 			var city = _repositoryWrapper.CityRepository.FindByCondition(x => x.CityId == id).FirstOrDefault();
 			_repositoryWrapper.CityRepository.Delete(city);
-            Log.Information("City {0} deleted!", city.Name);
+            Log.Information("City {0} deleted!...", city.Name);
             _repositoryWrapper.Save();
 		}
 	}

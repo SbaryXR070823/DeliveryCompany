@@ -19,7 +19,7 @@ namespace DeliveryCompany.Services.Services
 
 		public async Task<Models.DbModels.PageDescriptions> GetPageDescription(int Id)
 		{
-			Log.Information("Retrieving page description for Id {0}", Id);
+			Log.Information("Retrieving page description for Id {0}...", Id);
 			return _repositoryWrapper.PageDescriptionRepository.FindByCondition(x => x.PageDescriptionsId.Equals(Id)).FirstOrDefault();
 		}
 

@@ -32,7 +32,7 @@ namespace DeliveryCompany.Services.Services
                 await _employeeService.UpdateEmployeeAssigmentStatus((int)deliverCar.EmployeeId, Utility.Enums.AssigmentStatus.Unassigned);
             }
             _repositoryWrapper.DeliveryCarsRepository.Delete(deliverCar);
-            Log.Information("DeliveryCar {0} from city {1} deleted succesfully!", deliverCar.DeliveryCarsId, deliverCar.CityId);
+            Log.Information("DeliveryCar {0} from city {1} deleted succesfully!...", deliverCar.DeliveryCarsId, deliverCar.CityId);
             _repositoryWrapper.Save();
         }
 
@@ -52,12 +52,12 @@ namespace DeliveryCompany.Services.Services
                 deliveryCars.EmployeeId = deliveryCarCreationVM.EmployeeId;
                 deliveryCars.AssigmentStatus = Utility.Enums.AssigmentStatus.Assigned;
                 await _employeeService.UpdateEmployeeAssigmentStatus((int)deliveryCars.EmployeeId, Utility.Enums.AssigmentStatus.Assigned);
-                Log.Information("New delivery car for Employee {0} added succesfully in City {1}", (int)deliveryCars.EmployeeId, deliveryCars.CityId);
+                Log.Information("New delivery car for Employee {0} added succesfully in City {1}...", (int)deliveryCars.EmployeeId, deliveryCars.CityId);
             }
             else
             {
                 deliveryCars.AssigmentStatus = Utility.Enums.AssigmentStatus.Unassigned;
-                Log.Information("New delivery car added succesfully in City {1}", deliveryCars.CityId);
+                Log.Information("New delivery car added succesfully in City {1}...", deliveryCars.CityId);
             }
             _repositoryWrapper.DeliveryCarsRepository.Create(deliveryCars);
             _repositoryWrapper.Save();
@@ -84,14 +84,14 @@ namespace DeliveryCompany.Services.Services
             }
             deliveryCar.EmployeeId = deliveryCarVM.EmployeeId;
             _repositoryWrapper.DeliveryCarsRepository.Update(deliveryCar);
-            Log.Information("Updated the deliveryCar...{@0}", deliveryCar);
+            Log.Information("Updated the deliveryCar...{@0}...", deliveryCar);
             _repositoryWrapper.Save();
         }
 
         public DeliveryCars GetDeliveryCarByEmployeeId(int employeeId)
         {
             var deliveryCar = _repositoryWrapper.DeliveryCarsRepository.FindByCondition(c => c.EmployeeId.Equals(employeeId)).FirstOrDefault();
-            Log.Information("Returning delivery car {@0} for employee {1}", deliveryCar, employeeId);
+            Log.Information("Returning delivery car {@0} for employee {1}...", deliveryCar, employeeId);
             return deliveryCar;
         }
     }
