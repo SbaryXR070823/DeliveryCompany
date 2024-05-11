@@ -29,7 +29,8 @@ The Courier Management System is an application designed to facilitate the opera
    ```
    add-migration <name> -Context AppIdentityDbAccess
    add-migration <name> -Context DataAppDbContext
-   update-database
+   update-database -Context DataAppDbContext
+   update-database -Context AppIdentityDbAccess
    ```
 
 ## Contributing
