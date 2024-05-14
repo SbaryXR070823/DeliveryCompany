@@ -24,5 +24,5 @@ jobs:
       run: dotnet restore DeliveryCompany/DeliveryCompany.sln
     - name: Build
       run: dotnet build --no-restore DeliveryCompany/DeliveryCompany.sln
-   # - name: Test
-     # run: dotnet test --no-build --verbosity normal
+    - name: Test 
+      run: dotnet test --no-build --verbosity normal DeliveryCompany/UnitTests/UnitTests.csproj
