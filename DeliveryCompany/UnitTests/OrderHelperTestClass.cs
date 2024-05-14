@@ -73,5 +73,53 @@ namespace UnitTests
 
             Assert.IsFalse(isValid);
         }
+
+        [TestMethod]
+        public void CalculatePrice_ReturnsCorrectPrice_WhenAllParametersArePositive()
+        {
+            // Arrange
+            int weight = 10;
+            int width = 5;
+            int length = 8;
+            int height = 3;
+
+            // Act
+            double price = OrderHelpers.CalculatePrice(weight, width, length, height);
+
+            // Assert
+            Assert.AreEqual(5.0 + (weight * 0.1) + (width * length * height * 0.00001), price);
+        }
+
+        [TestMethod]
+        public void CalculatePrice_ReturnsZero_WhenTotalPriceIsNegative()
+        {
+            // Arrange
+            int weight = -10;
+            int width = -5;
+            int length = -8;
+            int height = -3;
+
+            // Act
+            double price = OrderHelpers.CalculatePrice(weight, width, length, height);
+
+            // Assert
+            Assert.AreEqual(0, price);
+        }
+
+        [TestMethod]
+        public void CalculatePrice_ReturnsBasePrice_WhenAllParametersAreZero()
+        {
+            // Arrange
+            int weight = 0;
+            int width = 0;
+            int length = 0;
+            int height = 0;
+
+            // Act
+            double price = OrderHelpers.CalculatePrice(weight, width, length, height);
+
+            // Assert
+            Assert.AreEqual(5.0, price);
+        }
     }
 }
