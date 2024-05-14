@@ -17,6 +17,10 @@ namespace Utility.Helpers
 
             double totalPrice = basePrice + weightPrice + volumePrice;
 
+            if(totalPrice < 0)
+            {
+                return 0;
+            }
             return totalPrice;
         }
 
@@ -27,5 +31,13 @@ namespace Utility.Helpers
                         package.MaxWidth > package.Width &&
                         package.MaxLength > package.Length;
         }
+
+        public static List<KeyValuePair<int, int>> GetOrderedDeliveriesByNumberOfOrders(Dictionary<int, int> deliveries)
+        {
+            List<KeyValuePair<int, int>> sortedList = deliveries.ToList();
+            sortedList.Sort((x, y) => x.Value.CompareTo(y.Value));
+            return sortedList;
+        }
+       
     }
 }
