@@ -219,8 +219,7 @@ namespace DeliveryCompany.Services.Services
             {
                 if (deliveryIdToNumberOfOrders.Count > 0)
                 {
-                    List<KeyValuePair<int, int>> sortedList = deliveryIdToNumberOfOrders.ToList();
-                    sortedList.Sort((x, y) => x.Value.CompareTo(y.Value));
+                    var sortedList = OrderHelpers.GetOrderedDeliveriesByNumberOfOrders(deliveryIdToNumberOfOrders);
                     Log.Information("Sorting the deliveries so we can balance them {@1}...", sortedList);
                     foreach (var dcv in sortedList)
                     {

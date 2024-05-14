@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Servic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utility", "Utility\Utility.csproj", "{2B94BDA0-AC07-4697-9F49-BA8D9CAD1366}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{FA320F00-B951-4053-BA7F-E3653484D54A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Repository\Repository.csproj", "{FA320F00-B951-4053-BA7F-E3653484D54A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{405932D9-1115-462C-85A5-A76FED87B90A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{FA320F00-B951-4053-BA7F-E3653484D54A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA320F00-B951-4053-BA7F-E3653484D54A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA320F00-B951-4053-BA7F-E3653484D54A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{405932D9-1115-462C-85A5-A76FED87B90A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{405932D9-1115-462C-85A5-A76FED87B90A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{405932D9-1115-462C-85A5-A76FED87B90A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{405932D9-1115-462C-85A5-A76FED87B90A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
