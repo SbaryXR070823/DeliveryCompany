@@ -1,4 +1,5 @@
 using Utility.Helpers;
+using Utility.Models;
 
 namespace UnitTests
 {
@@ -31,6 +32,46 @@ namespace UnitTests
             var result = OrderHelpers.GetOrderedDeliveriesByNumberOfOrders(emptyDictionary);
 
             Assert.AreEqual(0, result.Count);
+        }
+
+        [TestMethod]
+        public void CheckPackage_ReturnsTrue_WhenPackageIsValid()
+        {
+            PackageCheck package = new PackageCheck
+            {
+                MaxHeight = 10,
+                MaxWeight = 20,
+                MaxWidth = 30,
+                MaxLength = 40,
+                Height = 5,
+                Weight = 10,
+                Width = 20,
+                Length = 30
+            };
+
+            bool isValid = OrderHelpers.CheckPackage(package);
+
+            Assert.IsTrue(isValid);
+        }
+
+        [TestMethod]
+        public void CheckPackage_ReturnsFalse_WhenPackageIsInvalid()
+        {
+            PackageCheck package = new PackageCheck
+            {
+                MaxHeight = 10,
+                MaxWeight = 20,
+                MaxWidth = 30,
+                MaxLength = 40,
+                Height = 15, 
+                Weight = 10,
+                Width = 20,
+                Length = 30
+            };
+
+            bool isValid = OrderHelpers.CheckPackage(package);
+
+            Assert.IsFalse(isValid);
         }
     }
 }
