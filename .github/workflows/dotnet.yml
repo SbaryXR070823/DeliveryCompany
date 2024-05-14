@@ -24,5 +24,11 @@ jobs:
       run: dotnet restore DeliveryCompany/DeliveryCompany.sln
     - name: Build
       run: dotnet build --no-restore DeliveryCompany/DeliveryCompany.sln
-   # - name: Test
-     # run: dotnet test --no-build --verbosity normal
+    - name: Install test runner (if needed on your runner)
+      run: | 
+          sudo apt-get update
+          sudo apt-get install -y mstest
+
+    - name: Run unit tests with MSTest
+      run: |
+          mstest /testcontainer:DeliveryCompany/UnitTests/bin/Debug/UnitTests.dll
