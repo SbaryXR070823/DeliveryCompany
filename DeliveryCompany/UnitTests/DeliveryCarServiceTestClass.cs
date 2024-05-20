@@ -8,6 +8,7 @@ using Repository.IRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,7 +30,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public async Task AddNewDeliveryCar_WithEmployeeId_ShouldAssignEmployeeAndCreateDeliveryCar()
+        public async Task AddNewDeliveryCar_WithEmployeeId()
         {
             var deliveryCarCreationVM = new DeliveryCarCreationVM
             {
@@ -63,7 +64,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public async Task AddNewDeliveryCar_WithoutEmployeeId_ShouldCreateDeliveryCarWithoutAssigningEmployee()
+        public async Task AddNewDeliveryCar_WithoutEmployeeId()
         {
             var deliveryCarCreationVM = new DeliveryCarCreationVM
             {
@@ -90,6 +91,32 @@ namespace UnitTests
                 d.EmployeeId == null &&
                 d.DeliveryCarStatus == DeliveryCarStatus.Free &&
                 d.AssigmentStatus == AssigmentStatus.Unassigned)), Times.Once);
+            _mockRepositoryWrapper.Verify(x => x.Save(), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task DeleteDeliveryCarById_WithEmployeeId()
+        {
+            int deliveryCarId = 1;
+            int employeeId = 10;
+            var deliveryCar = new DeliveryCars
+            {
+                DeliveryCarsId = deliveryCarId,
+                EmployeeId = employeeId,
+                CityId = 1
+            };
+
+            _mockRepositoryWrapper.Setup(x => x.DeliveryCarsRepository.FindByCondition(It.IsAny<Expression<Func<DeliveryCars, bool>>>()))
+                .Returns(new List<DeliveryCars> { deliveryCar }.AsQueryable());
+            _mockEmployeeService.Setup(x => x.UpdateEmployeeAssigmentStatus(employeeId, AssigmentStatus.Unassigned))
+                .Returns(Task.CompletedTask);
+            _mockRepositoryWrapper.Setup(x => x.DeliveryCarsRepository.Delete(deliveryCar));
+            _mockRepositoryWrapper.Setup(x => x.Save());
+
+            await _deliveryCarService.DeleteDeliveryCarById(deliveryCarId);
+
+            _mockEmployeeService.Verify(x => x.UpdateEmployeeAssigmentStatus(employeeId, AssigmentStatus.Unassigned), Times.Once);
+            _mockRepositoryWrapper.Verify(x => x.DeliveryCarsRepository.Delete(deliveryCar), Times.Once);
             _mockRepositoryWrapper.Verify(x => x.Save(), Times.Once);
         }
     }
