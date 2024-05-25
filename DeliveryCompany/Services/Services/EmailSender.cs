@@ -16,7 +16,7 @@ namespace DeliveryCompany.Services.Services
         {
             Log.Information("Sending new e-mail from email, Message:{0}...", message);
             var mail = "ionutalexandrusbaroi@gmail.com";
-            var password = "ybtiybynqxhcxhfp";
+            var password = "";
             var client = new SmtpClient("smtp.gmail.com", 587)
             {
                 EnableSsl = true,
